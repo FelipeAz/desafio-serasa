@@ -16,5 +16,4 @@ func main() {
 
 	router := infrastructure.NewRouter()
 	router.Dispatch(db)
-	router.Listen()
 }

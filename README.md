@@ -1,6 +1,8 @@
 # desafio-serasa
 Teste tecnico de codificacao e arquitetura de software proposto pela empresa Serasa.
 
+# Instalacao
+
 # Arquitetura
 A Arquitetura escolhida para este desafio foi a Clean Architecture. Essa arquitetura se baseia em interfaces e contem, para cada entidade, um Controller, um Servico e um Repository alem da Entity. 
 
@@ -38,6 +40,15 @@ HTTP Request -> Router -> Controller -> Service -> Repository -> JSON Output
 | Infrastructure | Contem os Drivers da Aplicacao. |
 | Usecases | Contem as Regras de Negocio (Logica da Aplicacao). |
 
+# Dependencias
+Para o funcionamento dessa aplicacao sao necessarios: Curl, GORM, GORM MySQL Driver e GIN
+O GORM e o GIN pode ser instalado utilizando `go tool` pelos comandos:
+
+`go get -u gorm.io/gorm`
+`go get -u gorm.io/driver/mysql`
+`go get -u github.com/gin-gonic/gin`
+
+O banco de dados escolhido para esta aplicacao foi o MySQL 8.0
 
 # API
 

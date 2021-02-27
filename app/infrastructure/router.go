@@ -26,9 +26,10 @@ func (r Router) Dispatch(sqlHandler interfaces.SQLHandler) {
 	rg.POST("/", negativacaoController.Persist)
 	rg.PUT("/:id", negativacaoController.Update)
 	rg.DELETE("/:id", negativacaoController.Destroy)
+
+	r.listen()
 }
 
-// Listen inicia o servidor
-func (r Router) Listen() {
+func (r Router) listen() {
 	r.router.Run(":8080")
 }
