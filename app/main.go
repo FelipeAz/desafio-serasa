@@ -13,4 +13,8 @@ func main() {
 	}
 
 	defer db.CloseConnection()
+
+	router := infrastructure.NewRouter()
+	router.Dispatch(db)
+	router.Listen()
 }
