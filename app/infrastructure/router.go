@@ -21,10 +21,10 @@ func (r Router) Dispatch(sqlHandler interfaces.SQLHandler) {
 
 	negativacaoController := interfaces.NewNegativacaoController(sqlHandler)
 
-	rg.GET("/", negativacaoController.GetAll)
-	rg.GET("/:id", negativacaoController.Get)
-	rg.POST("/", negativacaoController.Save)
-	rg.PUT("/:id", negativacaoController.Change)
+	rg.GET("/", negativacaoController.Find)
+	rg.GET("/:id", negativacaoController.FindByID)
+	rg.POST("/", negativacaoController.Persist)
+	rg.PUT("/:id", negativacaoController.Update)
 	rg.DELETE("/:id", negativacaoController.Destroy)
 }
 

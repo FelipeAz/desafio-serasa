@@ -19,14 +19,14 @@ func (nr *NegativacaoRepository) Find() []entity.Negativacao {
 }
 
 // FindByID retorna uma unica negativacao.
-func (nr *NegativacaoRepository) FindByID(ID int) (n entity.Negativacao, err error) {
+func (nr *NegativacaoRepository) FindByID(ID int) (entity.Negativacao, error) {
 	var negativacao entity.Negativacao
 	db := nr.SQLHandler.GetGorm()
 	if err := db.Where("id = ?", ID).First(&negativacao).Error; err != nil {
 		return negativacao, err
 	}
 
-	return
+	return negativacao, nil
 }
 
 // Create cria uma negativacao.
