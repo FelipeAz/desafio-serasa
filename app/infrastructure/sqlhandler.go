@@ -44,6 +44,11 @@ func (env *SQLHandler) CloseConnection() error {
 	return nil
 }
 
+// GetGorm retorna uma instancia do GORM que sera utilizada para busca no BD.
+func (env *SQLHandler) GetGorm() *gorm.DB {
+	return env.db
+}
+
 func (env *SQLHandler) migrateTables() {
 	env.db.Migrator().AutoMigrate(&entity.Negativacao{})
 }

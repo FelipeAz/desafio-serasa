@@ -1,31 +1,75 @@
 package interfaces
 
-// NegativacaoRepository pertence a camada de interface.
+import (
+	"github.com/FelipeAz/desafio-serasa/app/entity"
+)
+
+// NegativacaoRepository eh responsavel por toda operacao que envolve banco.
 type NegativacaoRepository struct {
 	SQLHandler SQLHandler
 }
 
-// // Find retorna todas as negativacoes.
-// func (nr *NegativacaoRepository) Find() (n entity.Negativacoes, err error) {
+// Find retorna todas as negativacoes.
+func (nr *NegativacaoRepository) Find() entity.Negativacoes {
+	var negativacoes []entity.Negativacoes
+	db := nr.SQLHandler.GetGorm()
+	db.Find(&negativacoes)
 
-// }
+	return negativacoes
+}
 
-// // FindByID retorna uma unica negativacao.
-// func (nr *NegativacaoRepository) FindByID(ID int) (n entity.Negativacao, err error) {
+// FindByID retorna uma unica negativacao.
+func (nr *NegativacaoRepository) FindByID(ID int) (n entity.Negativacao, err error) {
+	var negativacao entity.Negativacao
+	db := nr.SQLHandler.GetGorm()
+	if err := db.Where("id = ?", ID).First(&negativacao).Error; err != nil {
+		return negativacao, err
+	}
 
-// }
+	return
+}
 
-// // Create cria uma negativacao.
-// func (nr *NegativacaoRepository) Create(neg entity.Negativacao) (id int, err error) {
+// Create cria uma negativacao.
+func (nr *NegativacaoRepository) Create(neg entity.Negativacao) uint {
+	db := nr.SQLHandler.GetGorm()
+	db.Create(&neg)
 
-// }
+	return neg.ID
+}
 
-// // Update atualiza uma negativacao.
-// func (nr *NegativacaoRepository) Update(ID int, neg entity.Negativacao) (n entity.Negativacao, err error) {
+// Update atualiza uma negativacao.
+func (nr *NegativacaoRepository) Update(ID int, input entity.Negativacao) (entity.Negativacao, error) {
+	db := nr.SQLHandler.GetGorm()
+	neg, err := nr.FindByID(ID)
 
-// }
+	if err != nil {
+		return neg, err
+	}
 
-// // Delete deleta uma negativacao.
-// func (nr *NegativacaoRepository) Delete(ID int) error {
+	if err := db.Model(&neg).Updates(map[string]interface{}{
+		"CompanyDocument":  input.CompanyDocument,
+		"CompanyName":      input.CompanyName,
+		"CustomerDocument": input.CustomerDocument,
+		"Value":            input.Value,
+		"DebtDate":         input.DebtDate,
+		"InclusionDate":    input.InclusionDate,
+	}).Error; err != nil {
+		return neg, err
+	}
 
-// }
+	return neg, nil
+}
+
+// Delete deleta uma negativacao.
+func (nr *NegativacaoRepository) Delete(ID int) error {
+	db := nr.SQLHandler.GetGorm()
+	n, err := nr.FindByID(ID)
+
+	if err != nil {
+		return err
+	}
+
+	db.Delete(&n)
+
+	return nil
+}

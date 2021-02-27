@@ -8,36 +8,31 @@ type NegativacaoService struct {
 }
 
 // GetAll busca todas as negativacoes
-func (ns *NegativacaoService) GetAll() (n entity.Negativacoes, err error) {
-	n, err = ns.NegativacaoRepository.Find()
-
+func (ns *NegativacaoService) GetAll() (n entity.Negativacoes) {
+	n = ns.NegativacaoRepository.Find()
 	return
 }
 
 // Get busca uma negativacao com o ID especificado.
 func (ns *NegativacaoService) Get(ID int) (n entity.Negativacao, err error) {
-	n, err = ns.NegativacaoRepository.FindById(ID)
-
+	n, err = ns.NegativacaoRepository.FindByID(ID)
 	return
 }
 
 // Save insere uma negativacao no banco de dados.
-func (ns *NegativacaoService) Save(n entity.Negativacao) (id int64, err error) {
-	id, err = ns.NegativacaoRepository.Create(n)
-
+func (ns *NegativacaoService) Save(n entity.Negativacao) (id uint) {
+	id = ns.NegativacaoRepository.Create(n)
 	return
 }
 
 // Change atualiza uma negativacao no banco de dados.
 func (ns *NegativacaoService) Change(ID int, neg entity.Negativacao) (n entity.Negativacao, err error) {
 	n, err = ns.NegativacaoRepository.Update(ID, neg)
-
 	return
 }
 
 // Destroy deleta uma negativacao do banco de dados.
 func (ns *NegativacaoService) Destroy(ID int) (err error) {
 	err = ns.NegativacaoRepository.Delete(ID)
-
 	return
 }

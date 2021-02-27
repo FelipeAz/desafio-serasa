@@ -9,6 +9,7 @@ type Negativacoes []Negativacoes
 
 // Negativacao representa a estrutura de uma negativacao.
 type Negativacao struct {
+	ID               uint      `json:"id" gorm:"primaryKey;autoIncrement;not null"`
 	CompanyDocument  string    `json:"companyDocument"`
 	CompanyName      string    `json:"companyName"`
 	CustomerDocument string    `json:"customerDocument"`
