@@ -8,7 +8,7 @@ type NegativacaoService struct {
 }
 
 // GetAll busca todas as negativacoes
-func (ns *NegativacaoService) GetAll() (n entity.Negativacoes) {
+func (ns *NegativacaoService) GetAll() (n []entity.Negativacao) {
 	n = ns.NegativacaoRepository.Find()
 	return
 }

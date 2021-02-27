@@ -4,9 +4,6 @@ import (
 	"time"
 )
 
-// Negativacoes pertencem a camada entidade.
-type Negativacoes []Negativacoes
-
 // Negativacao representa a estrutura de uma negativacao.
 type Negativacao struct {
 	ID               uint      `json:"id" gorm:"primaryKey;autoIncrement;not null"`

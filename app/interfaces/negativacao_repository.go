@@ -10,8 +10,8 @@ type NegativacaoRepository struct {
 }
 
 // Find retorna todas as negativacoes.
-func (nr *NegativacaoRepository) Find() entity.Negativacoes {
-	var negativacoes []entity.Negativacoes
+func (nr *NegativacaoRepository) Find() []entity.Negativacao {
+	var negativacoes []entity.Negativacao
 	db := nr.SQLHandler.GetGorm()
 	db.Find(&negativacoes)
 
