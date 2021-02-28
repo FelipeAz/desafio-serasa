@@ -7,24 +7,25 @@ import (
 // UserService pertence a camada usecases.
 type UserService struct {
 	UserRepository UserRepository
+	JWTAuth        JWTAuth
 }
 
 // Login do usuario no sistema.
-func (us *UserService) Login(email, password string, jwt JWTService) (access entity.Access, err error) {
+func (us *UserService) Login(email, password string, jwt JWTAuth) (access entity.Access, err error) {
 	usr, err := us.UserRepository.Login(email, password)
 	if err != nil {
 		return entity.Access{}, err
 	}
 
-	tokenString, err := jwt.CreateToken(entity.Access{})
-	access, err = us.AuthUser(usr.ID, tokenString)
+	tokenDetails, err := jwt.CreateToken(entity.Access{})
+	access, err = us.AuthUser(usr.ID, *tokenDetails)
 
 	return
 }
 
 // AuthUser insere o token de autenticacao no banco.
-func (us *UserService) AuthUser(id uint, token string) (access entity.Access, err error) {
-	access, err = us.UserRepository.AuthUser(id, token)
+func (us *UserService) AuthUser(id uint, tokenDetails TokenDetails) (access entity.Access, err error) {
+	access, err = us.UserRepository.AuthUser(id, &tokenDetails)
 	return
 }
 

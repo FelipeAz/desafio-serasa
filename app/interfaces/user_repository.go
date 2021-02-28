@@ -2,6 +2,7 @@ package interfaces
 
 import (
 	"github.com/FelipeAz/desafio-serasa/app/entity"
+	"github.com/FelipeAz/desafio-serasa/app/usecases"
 )
 
 // UserRepository representa o repositorio dos usuarios e realiza as operacoes de BD.
@@ -21,19 +22,20 @@ func (ur *UserRepository) Login(email string, password string) (entity.User, err
 }
 
 // AuthUser insere o token de autenticacao no banco.
-func (ur *UserRepository) AuthUser(id uint, token string) (entity.Access, error) {
+func (ur *UserRepository) AuthUser(id uint, tokenDetails *usecases.TokenDetails) (entity.Access, error) {
 	db := ur.SQLHandler.GetGorm()
 
 	// Atualiza o token de acesso caso ja exista o ID do usuario na tabela access
 	var refreshAuth entity.Access
 	if err := db.Where("user_id=?", id).First(&refreshAuth).Error; err == nil {
-		db.Model(&refreshAuth).Update("access_token", token)
+		db.Model(&refreshAuth).Updates(entity.Access{AccessToken: tokenDetails.AccessToken, RefreshToken: tokenDetails.RefreshToken})
 		return refreshAuth, err
 	}
 
 	auth := entity.Access{
-		UserID:      id,
-		AccessToken: token,
+		UserID:       id,
+		AccessToken:  tokenDetails.AccessToken,
+		RefreshToken: tokenDetails.RefreshToken,
 	}
 
 	result := db.Create(&auth)

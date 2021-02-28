@@ -8,36 +8,56 @@ import (
 	"time"
 
 	"github.com/FelipeAz/desafio-serasa/app/entity"
+	"github.com/FelipeAz/desafio-serasa/app/usecases"
 	"github.com/dgrijalva/jwt-go"
 )
 
-// JWTService contem variaveis do servico.
-type JWTService struct {
-	issure string
+// JWTAuth contem variaveis do servico.
+type JWTAuth struct {
+	SQLHandler SQLHandler
+	issure     string
 }
 
-// NewJWTAuthService instancia do servico.
-func NewJWTAuthService() *JWTService {
-	return &JWTService{
-		issure: "Felipe",
+// NewJWTAuth instancia do servico.
+func NewJWTAuth(sqlHandler SQLHandler) *JWTAuth {
+	return &JWTAuth{
+		SQLHandler: sqlHandler,
+		issure:     "Felipe",
 	}
 }
 
 // CreateToken cria um token JWT.
-func (service *JWTService) CreateToken(auth entity.Access) (string, error) {
+func (service *JWTAuth) CreateToken(auth entity.Access) (td *usecases.TokenDetails, err error) {
+	td = &usecases.TokenDetails{
+		AtExpires: time.Now().Add(time.Minute * 15).Unix(),
+		RtExpires: time.Now().Add(time.Hour * 24 * 7).Unix(),
+	}
+
 	claims := jwt.MapClaims{}
 	claims["authorized"] = true
 	claims["token"] = auth.AccessToken
 	claims["user_id"] = auth.UserID
 	claims["Issuer"] = service.issure
-	claims["ExpiresAt"] = time.Now().Add(time.Hour * 2).Unix()
-	claims["IssuedAt"] = time.Now().Unix()
+	claims["ExpiresAt"] = time.Now().Add(time.Minute * 15).Unix()
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	return token.SignedString([]byte(os.Getenv("JWT_SECRET")))
+	td.AccessToken, err = token.SignedString([]byte(os.Getenv("JWT_SECRET")))
+	if err != nil {
+		return nil, err
+
+	}
+
+	rtClaims := jwt.MapClaims{}
+	rtClaims["refresh_token"] = auth.RefreshToken
+	rtClaims["user_id"] = auth.UserID
+	rtClaims["ExpiresAt"] = time.Now().Add(time.Hour * 24 * 7).Unix()
+	refreshToken := jwt.NewWithClaims(jwt.SigningMethodHS256, rtClaims)
+	td.RefreshToken, err = refreshToken.SignedString([]byte(os.Getenv("JWT_REFRESH_SECRET")))
+
+	return
 }
 
 // TokenValid retorna se o token eh valido.
-func (service *JWTService) TokenValid(r *http.Request) error {
+func (service *JWTAuth) TokenValid(r *http.Request) error {
 	token, err := service.VerifyToken(r)
 	if err != nil {
 		return err
@@ -49,7 +69,7 @@ func (service *JWTService) TokenValid(r *http.Request) error {
 }
 
 // VerifyToken extrai o token e verifica.
-func (service *JWTService) VerifyToken(r *http.Request) (*jwt.Token, error) {
+func (service *JWTAuth) VerifyToken(r *http.Request) (*jwt.Token, error) {
 	tokenString := service.ExtractToken(r)
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
@@ -64,7 +84,7 @@ func (service *JWTService) VerifyToken(r *http.Request) (*jwt.Token, error) {
 }
 
 // ExtractToken extrai o token da requisicao.
-func (service *JWTService) ExtractToken(r *http.Request) string {
+func (service *JWTAuth) ExtractToken(r *http.Request) string {
 	keys := r.URL.Query()
 	token := keys.Get("token")
 	if token != "" {
@@ -77,4 +97,15 @@ func (service *JWTService) ExtractToken(r *http.Request) string {
 		return strArr[1]
 	}
 	return ""
+}
+
+// FetchToken valida se existe um usuario com o token no BD.
+func (service *JWTAuth) FetchToken(token string) bool {
+	var access entity.Access
+	db := service.SQLHandler.GetGorm()
+	if err := db.Where("access_token=?", token).First(&access).Error; err != nil {
+		return false
+	}
+
+	return true
 }

@@ -18,12 +18,13 @@ func NewRouter() interfaces.Router {
 
 // Dispatch ativa as rota
 func (r Router) Dispatch(sqlHandler interfaces.SQLHandler) {
-	userController := interfaces.NewUserController(sqlHandler, *interfaces.NewJWTAuthService())
+	jwt := interfaces.NewJWTAuth(sqlHandler)
+
+	userController := interfaces.NewUserController(sqlHandler, *jwt)
 	r.router.POST("/signup", userController.SignUp)
 	r.router.POST("/logout", userController.Logout)
 	r.router.POST("/login", userController.Login)
 
-	jwt := interfaces.NewJWTAuthService()
 	negativacaoController := interfaces.NewNegativacaoController(sqlHandler)
 	rg := r.router.Group("/negativacao")
 	rg.GET("/", middleware.AuthorizeJWT(*jwt), negativacaoController.Get)

@@ -11,18 +11,18 @@ import (
 // UserController contem o servico de usuario.
 type UserController struct {
 	UserService usecases.UserService
-	JWTService  usecases.JWTService
+	JWTAuth     usecases.JWTAuth
 }
 
 // NewUserController retorna o controller do login.
-func NewUserController(sqlHandler SQLHandler, jwtService JWTService) *UserController {
+func NewUserController(sqlHandler SQLHandler, jwtAuth JWTAuth) *UserController {
 	return &UserController{
 		UserService: usecases.UserService{
 			UserRepository: &UserRepository{
 				SQLHandler: sqlHandler,
 			},
 		},
-		JWTService: &jwtService,
+		JWTAuth: &jwtAuth,
 	}
 }
 
@@ -34,13 +34,13 @@ func (uc *UserController) Login(c *gin.Context) {
 		return
 	}
 
-	access, err := uc.UserService.Login(credential.Email, credential.Password, uc.JWTService)
+	access, err := uc.UserService.Login(credential.Email, credential.Password, uc.JWTAuth)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"Login Failed": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"token": access})
+	c.JSON(http.StatusOK, gin.H{"token": access.AccessToken})
 }
 
 // SignUp cria uma conta
