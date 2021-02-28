@@ -41,12 +41,13 @@ HTTP Request -> Router -> Controller -> Service -> Repository -> JSON Output
 | Usecases | Contem as Regras de Negocio (Logica da Aplicacao). |
 
 # Dependencias
-Para o funcionamento dessa aplicacao sao necessarios: Curl, GORM, GORM MySQL Driver e GIN
+Para o funcionamento dessa aplicacao sao necessarios: Curl, JWT-GO, GORM, GORM MySQL Driver e GIN
 O GORM e o GIN pode ser instalado utilizando `go tool` pelos comandos:
 
 `go get -u gorm.io/gorm`
 `go get -u gorm.io/driver/mysql`
 `go get -u github.com/gin-gonic/gin`
+`go get -u github.com/dgrijalva/jwt-go`
 
 O banco de dados escolhido para esta aplicacao foi o MySQL 8.0
 

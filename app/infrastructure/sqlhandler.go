@@ -50,5 +50,9 @@ func (env *SQLHandler) GetGorm() *gorm.DB {
 }
 
 func (env *SQLHandler) migrateTables() {
-	env.db.Migrator().AutoMigrate(&entity.Negativacao{})
+	env.db.Migrator().AutoMigrate(
+		&entity.Negativacao{},
+		&entity.User{},
+		&entity.Access{},
+	)
 }

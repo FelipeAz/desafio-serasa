@@ -26,7 +26,7 @@ func (ns *NegativacaoService) Persist(n entity.Negativacao) (id uint) {
 }
 
 // Update atualiza uma negativacao no banco de dados.
-func (ns *NegativacaoService) Update(ID int, neg entity.Negativacao) (n entity.Negativacao, err error) {
+func (ns *NegativacaoService) Update(ID int, neg *entity.Negativacao) (n *entity.Negativacao, err error) {
 	n, err = ns.NegativacaoRepository.Update(ID, neg)
 	return
 }

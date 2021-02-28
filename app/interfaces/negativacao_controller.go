@@ -94,7 +94,7 @@ func (nc *NegativacaoController) Update(c *gin.Context) {
 		InclusionDate:    input.InclusionDate,
 	}
 
-	neg, err := nc.NegativacaoService.Update(id, negativacao)
+	neg, err := nc.NegativacaoService.Update(id, &negativacao)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

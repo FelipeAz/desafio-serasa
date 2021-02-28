@@ -7,6 +7,6 @@ type NegativacaoRepository interface {
 	Find() []entity.Negativacao
 	FindByID(int) (entity.Negativacao, error)
 	Create(entity.Negativacao) uint
-	Update(int, entity.Negativacao) (entity.Negativacao, error)
+	Update(int, *entity.Negativacao) (*entity.Negativacao, error)
 	Delete(int) error
 }
