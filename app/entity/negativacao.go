@@ -6,7 +6,7 @@ import (
 
 // Negativacao representa a estrutura de uma negativacao.
 type Negativacao struct {
-	ID               uint      `json:"id" gorm:"primaryKey;autoIncrement;not null"`
+	ID               uint      `json:"id,omitempty" gorm:"primaryKey;autoIncrement;not null"`
 	CompanyDocument  string    `json:"companyDocument" binding:"required"`
 	CompanyName      string    `json:"companyName" binding:"required"`
 	CustomerDocument string    `json:"customerDocument" binding:"required"`

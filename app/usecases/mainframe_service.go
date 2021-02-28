@@ -16,19 +16,35 @@ func (ms *MainframeService) connectMainframe() error {
 	return nil
 }
 
-// Integrate realiza a integracao com o mainframe persistindo as negativacoes no BD.
-func (ms *MainframeService) Integrate() error {
+// Get retorna todas as negativacoes do mainframe
+func (ms *MainframeService) Get() ([]entity.Negativacao, error) {
 	var data []entity.Negativacao
 	if err := ms.connectMainframe(); err != nil {
-		return err
+		return data, err
 	}
 
 	err := ms.readJSONFile(&data, "app/negativacoes.json")
+	if err != nil {
+		return data, err
+	}
+
+	return data, nil
+}
+
+// Integrate realiza a integracao com o mainframe persistindo as negativacoes no BD.
+func (ms *MainframeService) Integrate() error {
+	negativacoes, err := ms.Get()
 	if err != nil {
 		return err
 	}
 
 	// Persist Negativacoes
+	for i := 0; i < len(negativacoes); i++ {
+		_, err := ms.persistNegativacao(negativacoes[i])
+		if err != nil {
+			return err
+		}
+	}
 
 	return nil
 }

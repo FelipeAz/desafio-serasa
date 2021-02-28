@@ -23,7 +23,18 @@ func NewMainframeController(sqlHandler SQLHandler) *MainframeController {
 	}
 }
 
-// Integrate retorna todas as Negativacoes do servidor JSON
+// Get retorna todas as Negativacoes do servidor JSON
+func (mc *MainframeController) Get(c *gin.Context) {
+	data, err := mc.MainframeService.Get()
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": data})
+}
+
+// Integrate persiste todas as negativacoes do servidor JSON no banco de dados
 func (mc *MainframeController) Integrate(c *gin.Context) {
 	err := mc.MainframeService.Integrate()
 	if err != nil {

@@ -34,7 +34,8 @@ func (r Router) Dispatch(sqlHandler interfaces.SQLHandler) {
 
 	mainframeController := interfaces.NewMainframeController(sqlHandler)
 	rg = r.router.Group("/mainframe")
-	rg.GET("/", middleware.AuthorizeJWT(*jwt), mainframeController.Integrate)
+	rg.GET("/", middleware.AuthorizeJWT(*jwt), mainframeController.Get)
+	rg.GET("/integrate", middleware.AuthorizeJWT(*jwt), mainframeController.Integrate)
 
 	r.listen()
 }
