@@ -36,7 +36,7 @@ func (uc *UserController) Login(c *gin.Context) {
 
 	usr, err := uc.UserService.Login(credential.Email, credential.Password)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, "Login Failed")
 		return
 	}
 
@@ -73,5 +73,10 @@ func (uc *UserController) Logout(c *gin.Context) {
 	}
 
 	logout := uc.UserService.Logout(credential.Email, credential.Password)
-	c.JSON(http.StatusOK, gin.H{"Logout": logout})
+	if logout == false {
+		c.JSON(http.StatusOK, "User is not Logged In")
+		return
+	}
+
+	c.JSON(http.StatusOK, "Successfully Logged Out")
 }

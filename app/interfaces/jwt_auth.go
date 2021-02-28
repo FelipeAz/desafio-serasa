@@ -52,7 +52,6 @@ func (service *JWTService) TokenValid(r *http.Request) error {
 func (service *JWTService) VerifyToken(r *http.Request) (*jwt.Token, error) {
 	tokenString := service.ExtractToken(r)
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-		//does this token conform to "SigningMethodHMAC" ?
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 		}
