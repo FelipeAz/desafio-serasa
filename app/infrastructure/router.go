@@ -26,12 +26,15 @@ func (r Router) Dispatch(sqlHandler interfaces.SQLHandler) {
 	jwt := interfaces.NewJWTAuthService()
 	negativacaoController := interfaces.NewNegativacaoController(sqlHandler)
 	rg := r.router.Group("/negativacao")
-
 	rg.GET("/", middleware.AuthorizeJWT(*jwt), negativacaoController.Get)
 	rg.GET("/:id", middleware.AuthorizeJWT(*jwt), negativacaoController.GetByID)
 	rg.POST("/", middleware.AuthorizeJWT(*jwt), negativacaoController.Create)
 	rg.PUT("/:id", middleware.AuthorizeJWT(*jwt), negativacaoController.Update)
 	rg.DELETE("/:id", middleware.AuthorizeJWT(*jwt), negativacaoController.Delete)
+
+	mainframeController := interfaces.NewMainframeController(sqlHandler)
+	rg = r.router.Group("/mainframe")
+	rg.GET("/", middleware.AuthorizeJWT(*jwt), mainframeController.Integrate)
 
 	r.listen()
 }

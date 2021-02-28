@@ -34,14 +34,11 @@ func (uc *UserController) Login(c *gin.Context) {
 		return
 	}
 
-	usr, err := uc.UserService.Login(credential.Email, credential.Password)
+	access, err := uc.UserService.Login(credential.Email, credential.Password, uc.JWTService)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, "Login Failed")
+		c.JSON(http.StatusBadRequest, gin.H{"Login Failed": err.Error()})
 		return
 	}
-
-	tokenString, err := uc.JWTService.CreateToken(entity.Access{})
-	access := uc.UserService.AuthUser(usr.ID, tokenString)
 
 	c.JSON(http.StatusOK, gin.H{"token": access})
 }
@@ -54,7 +51,11 @@ func (uc *UserController) SignUp(c *gin.Context) {
 		return
 	}
 
-	uc.UserService.SignUp(&input)
+	_, err := uc.UserService.SignUp(&input)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err})
+		return
+	}
 
 	c.JSON(http.StatusOK, gin.H{"data": input})
 }

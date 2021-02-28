@@ -21,14 +21,14 @@ func (ur *UserRepository) Login(email string, password string) (entity.User, err
 }
 
 // AuthUser insere o token de autenticacao no banco.
-func (ur *UserRepository) AuthUser(id uint, token string) entity.Access {
+func (ur *UserRepository) AuthUser(id uint, token string) (entity.Access, error) {
 	db := ur.SQLHandler.GetGorm()
 
 	// Atualiza o token de acesso caso ja exista o ID do usuario na tabela access
 	var refreshAuth entity.Access
 	if err := db.Where("user_id=?", id).First(&refreshAuth).Error; err == nil {
 		db.Model(&refreshAuth).Update("access_token", token)
-		return refreshAuth
+		return refreshAuth, err
 	}
 
 	auth := entity.Access{
@@ -36,17 +36,17 @@ func (ur *UserRepository) AuthUser(id uint, token string) entity.Access {
 		AccessToken: token,
 	}
 
-	db.Create(&auth)
+	result := db.Create(&auth)
 
-	return auth
+	return auth, result.Error
 }
 
 // SignUp registra um novo usuario ao sistema.
-func (ur *UserRepository) SignUp(usr *entity.User) *entity.User {
+func (ur *UserRepository) SignUp(usr *entity.User) (*entity.User, error) {
 	db := ur.SQLHandler.GetGorm()
-	db.Create(&usr)
+	result := db.Create(&usr)
 
-	return usr
+	return usr, result.Error
 }
 
 // Logout desloga o usuario do sistema

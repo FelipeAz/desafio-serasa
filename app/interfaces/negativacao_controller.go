@@ -57,7 +57,11 @@ func (nc *NegativacaoController) Create(c *gin.Context) {
 		return
 	}
 
-	id := nc.NegativacaoService.Persist(input)
+	id, err := nc.NegativacaoService.Create(input)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err})
+		return
+	}
 
 	c.JSON(http.StatusOK, gin.H{"data": id})
 }
@@ -93,7 +97,7 @@ func (nc *NegativacaoController) Delete(c *gin.Context) {
 		return
 	}
 
-	err = nc.NegativacaoService.Destroy(id)
+	err = nc.NegativacaoService.Delete(id)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

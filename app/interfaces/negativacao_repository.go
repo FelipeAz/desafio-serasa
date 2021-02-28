@@ -30,11 +30,11 @@ func (nr *NegativacaoRepository) GetByID(ID int) (entity.Negativacao, error) {
 }
 
 // Create cria uma negativacao.
-func (nr *NegativacaoRepository) Create(neg entity.Negativacao) uint {
+func (nr *NegativacaoRepository) Create(neg entity.Negativacao) (uint, error) {
 	db := nr.SQLHandler.GetGorm()
-	db.Create(&neg)
+	result := db.Create(&neg)
 
-	return neg.ID
+	return neg.ID, result.Error
 }
 
 // Update atualiza uma negativacao.

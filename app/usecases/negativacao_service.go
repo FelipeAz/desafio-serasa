@@ -19,9 +19,9 @@ func (ns *NegativacaoService) GetByID(ID int) (n entity.Negativacao, err error) 
 	return
 }
 
-// Persist insere uma negativacao no banco de dados.
-func (ns *NegativacaoService) Persist(n entity.Negativacao) (id uint) {
-	id = ns.NegativacaoRepository.Create(n)
+// Create insere uma negativacao no banco de dados.
+func (ns *NegativacaoService) Create(n entity.Negativacao) (id uint, err error) {
+	id, err = ns.NegativacaoRepository.Create(n)
 	return
 }
 
@@ -31,8 +31,8 @@ func (ns *NegativacaoService) Update(ID int, neg *entity.Negativacao) (n *entity
 	return
 }
 
-// Destroy deleta uma negativacao do banco de dados.
-func (ns *NegativacaoService) Destroy(ID int) (err error) {
+// Delete deleta uma negativacao do banco de dados.
+func (ns *NegativacaoService) Delete(ID int) (err error) {
 	err = ns.NegativacaoRepository.Delete(ID)
 	return
 }
