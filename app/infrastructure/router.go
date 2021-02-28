@@ -2,6 +2,7 @@ package infrastructure
 
 import (
 	"github.com/FelipeAz/desafio-serasa/app/interfaces"
+	"github.com/FelipeAz/desafio-serasa/app/middleware"
 	"github.com/gin-gonic/gin"
 )
 
@@ -22,14 +23,15 @@ func (r Router) Dispatch(sqlHandler interfaces.SQLHandler) {
 	r.router.POST("/logout", userController.Logout)
 	r.router.POST("/login", userController.Login)
 
+	jwt := interfaces.NewJWTAuthService()
 	negativacaoController := interfaces.NewNegativacaoController(sqlHandler)
 	rg := r.router.Group("/negativacao")
 
-	rg.GET("/", negativacaoController.Find)
-	rg.GET("/:id", negativacaoController.FindByID)
-	rg.POST("/", negativacaoController.Persist)
-	rg.PUT("/:id", negativacaoController.Update)
-	rg.DELETE("/:id", negativacaoController.Destroy)
+	rg.GET("/", middleware.AuthorizeJWT(*jwt), negativacaoController.Find)
+	rg.GET("/:id", middleware.AuthorizeJWT(*jwt), negativacaoController.FindByID)
+	rg.POST("/", middleware.AuthorizeJWT(*jwt), negativacaoController.Persist)
+	rg.PUT("/:id", middleware.AuthorizeJWT(*jwt), negativacaoController.Update)
+	rg.DELETE("/:id", middleware.AuthorizeJWT(*jwt), negativacaoController.Destroy)
 
 	r.listen()
 }
