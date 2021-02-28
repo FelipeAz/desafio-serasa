@@ -9,13 +9,13 @@ type NegativacaoService struct {
 
 // Get busca todas as negativacoes
 func (ns *NegativacaoService) Get() (n []entity.Negativacao) {
-	n = ns.NegativacaoRepository.Find()
+	n = ns.NegativacaoRepository.Get()
 	return
 }
 
 // GetByID busca uma negativacao com o ID especificado.
 func (ns *NegativacaoService) GetByID(ID int) (n entity.Negativacao, err error) {
-	n, err = ns.NegativacaoRepository.FindByID(ID)
+	n, err = ns.NegativacaoRepository.GetByID(ID)
 	return
 }
 

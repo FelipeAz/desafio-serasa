@@ -27,11 +27,11 @@ func (r Router) Dispatch(sqlHandler interfaces.SQLHandler) {
 	negativacaoController := interfaces.NewNegativacaoController(sqlHandler)
 	rg := r.router.Group("/negativacao")
 
-	rg.GET("/", middleware.AuthorizeJWT(*jwt), negativacaoController.Find)
-	rg.GET("/:id", middleware.AuthorizeJWT(*jwt), negativacaoController.FindByID)
-	rg.POST("/", middleware.AuthorizeJWT(*jwt), negativacaoController.Persist)
+	rg.GET("/", middleware.AuthorizeJWT(*jwt), negativacaoController.Get)
+	rg.GET("/:id", middleware.AuthorizeJWT(*jwt), negativacaoController.GetByID)
+	rg.POST("/", middleware.AuthorizeJWT(*jwt), negativacaoController.Create)
 	rg.PUT("/:id", middleware.AuthorizeJWT(*jwt), negativacaoController.Update)
-	rg.DELETE("/:id", middleware.AuthorizeJWT(*jwt), negativacaoController.Destroy)
+	rg.DELETE("/:id", middleware.AuthorizeJWT(*jwt), negativacaoController.Delete)
 
 	r.listen()
 }

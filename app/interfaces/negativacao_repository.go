@@ -9,8 +9,8 @@ type NegativacaoRepository struct {
 	SQLHandler SQLHandler
 }
 
-// Find retorna todas as negativacoes.
-func (nr *NegativacaoRepository) Find() []entity.Negativacao {
+// Get retorna todas as negativacoes.
+func (nr *NegativacaoRepository) Get() []entity.Negativacao {
 	var negativacoes []entity.Negativacao
 	db := nr.SQLHandler.GetGorm()
 	db.Find(&negativacoes)
@@ -18,8 +18,8 @@ func (nr *NegativacaoRepository) Find() []entity.Negativacao {
 	return negativacoes
 }
 
-// FindByID retorna uma unica negativacao.
-func (nr *NegativacaoRepository) FindByID(ID int) (entity.Negativacao, error) {
+// GetByID retorna uma unica negativacao.
+func (nr *NegativacaoRepository) GetByID(ID int) (entity.Negativacao, error) {
 	var negativacao entity.Negativacao
 	db := nr.SQLHandler.GetGorm()
 	if err := db.Where("id = ?", ID).First(&negativacao).Error; err != nil {
@@ -40,7 +40,7 @@ func (nr *NegativacaoRepository) Create(neg entity.Negativacao) uint {
 // Update atualiza uma negativacao.
 func (nr *NegativacaoRepository) Update(ID int, input *entity.Negativacao) (*entity.Negativacao, error) {
 	db := nr.SQLHandler.GetGorm()
-	neg, err := nr.FindByID(ID)
+	neg, err := nr.GetByID(ID)
 
 	if err != nil {
 		return &neg, err
@@ -63,7 +63,7 @@ func (nr *NegativacaoRepository) Update(ID int, input *entity.Negativacao) (*ent
 // Delete deleta uma negativacao.
 func (nr *NegativacaoRepository) Delete(ID int) error {
 	db := nr.SQLHandler.GetGorm()
-	n, err := nr.FindByID(ID)
+	n, err := nr.GetByID(ID)
 
 	if err != nil {
 		return err

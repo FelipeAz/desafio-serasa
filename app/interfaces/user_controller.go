@@ -54,14 +54,9 @@ func (uc *UserController) SignUp(c *gin.Context) {
 		return
 	}
 
-	usr := entity.User{
-		Email:    input.Email,
-		Password: input.Password,
-	}
+	uc.UserService.SignUp(&input)
 
-	uc.UserService.SignUp(&usr)
-
-	c.JSON(http.StatusOK, gin.H{"data": usr})
+	c.JSON(http.StatusOK, gin.H{"data": input})
 }
 
 // Logout remove a sessao do usuario
