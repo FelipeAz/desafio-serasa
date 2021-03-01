@@ -11,9 +11,15 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
 	defer db.CloseConnection()
 
+	rds := infrastructure.NewRedis()
+	testConn, err := rds.RedisConnect()
+	if err != nil {
+		log.Fatal(err)
+	}
+	testConn.Close()
+
 	router := infrastructure.NewRouter()
-	router.Dispatch(db)
+	router.Dispatch(db, rds)
 }

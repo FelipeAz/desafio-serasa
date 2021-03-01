@@ -16,8 +16,8 @@ func NewRouter() interfaces.Router {
 	return Router{router: gin.Default()}
 }
 
-// Dispatch ativa as rota
-func (r Router) Dispatch(sqlHandler interfaces.SQLHandler) {
+// Dispatch inicializa as rotas e redireciona aos controllers.
+func (r Router) Dispatch(sqlHandler interfaces.SQLHandler, rds interfaces.Redis) {
 	jwt := interfaces.NewJWTAuth(sqlHandler)
 
 	userController := interfaces.NewUserController(sqlHandler, *jwt)
@@ -25,7 +25,7 @@ func (r Router) Dispatch(sqlHandler interfaces.SQLHandler) {
 	r.router.POST("/logout", userController.Logout)
 	r.router.POST("/login", userController.Login)
 
-	negativacaoController := interfaces.NewNegativacaoController(sqlHandler, *interfaces.NewCryptoHandler())
+	negativacaoController := interfaces.NewNegativacaoController(sqlHandler, rds, *interfaces.NewCryptoHandler())
 	rg := r.router.Group("/negativacao")
 	rg.GET("/", middleware.AuthorizeJWT(jwt), negativacaoController.Get)
 	rg.GET("/:id", middleware.AuthorizeJWT(jwt), negativacaoController.GetByID)

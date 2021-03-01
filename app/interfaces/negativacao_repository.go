@@ -1,19 +1,36 @@
 package interfaces
 
 import (
+	"encoding/json"
+	"strconv"
+
 	"github.com/FelipeAz/desafio-serasa/app/entity"
 )
 
 // NegativacaoRepository eh responsavel por toda operacao que envolve banco.
 type NegativacaoRepository struct {
 	SQLHandler SQLHandler
+	Redis      Redis
 }
 
 // Get retorna todas as negativacoes.
 func (nr *NegativacaoRepository) Get() []entity.Negativacao {
 	var negativacoes []entity.Negativacao
-	db := nr.SQLHandler.GetGorm()
-	db.Find(&negativacoes)
+
+	redisName := "all"
+	data, err := nr.Redis.Get(redisName)
+	if err != nil {
+		db := nr.SQLHandler.GetGorm()
+		err = db.Debug().Model(&entity.Negativacao{}).Find(&negativacoes).Error
+		if err != nil {
+			return []entity.Negativacao{}
+		}
+
+		newData, _ := json.Marshal(negativacoes)
+		nr.Redis.Set(redisName, newData)
+	}
+
+	json.Unmarshal(data, &negativacoes)
 
 	return negativacoes
 }
@@ -21,10 +38,19 @@ func (nr *NegativacaoRepository) Get() []entity.Negativacao {
 // GetByID retorna uma unica negativacao.
 func (nr *NegativacaoRepository) GetByID(ID int) (entity.Negativacao, error) {
 	var negativacao entity.Negativacao
-	db := nr.SQLHandler.GetGorm()
-	if err := db.Where("id = ?", ID).First(&negativacao).Error; err != nil {
-		return negativacao, err
+
+	data, err := nr.Redis.Get(strconv.Itoa(ID))
+	if err != nil {
+		db := nr.SQLHandler.GetGorm()
+		if err := db.Where("id = ?", ID).First(&negativacao).Error; err != nil {
+			return negativacao, err
+		}
+
+		newData, _ := json.Marshal(negativacao)
+		nr.Redis.Set(strconv.Itoa(ID), newData)
 	}
+
+	json.Unmarshal(data, &negativacao)
 
 	return negativacao, nil
 }
@@ -33,6 +59,10 @@ func (nr *NegativacaoRepository) GetByID(ID int) (entity.Negativacao, error) {
 func (nr *NegativacaoRepository) Create(neg entity.Negativacao) (uint, error) {
 	db := nr.SQLHandler.GetGorm()
 	result := db.Create(&neg)
+
+	newData, _ := json.Marshal(neg)
+	nr.Redis.Set(strconv.Itoa(int(neg.ID)), newData)
+	nr.Redis.Flush("all")
 
 	return neg.ID, result.Error
 }
@@ -57,6 +87,10 @@ func (nr *NegativacaoRepository) Update(ID int, input entity.Negativacao) (entit
 		return neg, err
 	}
 
+	newData, _ := json.Marshal(neg)
+	nr.Redis.Set(strconv.Itoa(int(neg.ID)), newData)
+	nr.Redis.Flush("all")
+
 	return neg, nil
 }
 
@@ -70,6 +104,9 @@ func (nr *NegativacaoRepository) Delete(ID int) error {
 	}
 
 	db.Delete(&n)
+
+	nr.Redis.Flush(strconv.Itoa(ID))
+	nr.Redis.Flush("all")
 
 	return nil
 }

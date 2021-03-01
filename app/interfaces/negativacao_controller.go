@@ -15,11 +15,12 @@ type NegativacaoController struct {
 }
 
 // NewNegativacaoController retorna uma instancia do controller.
-func NewNegativacaoController(sqlHandler SQLHandler, cryptoHandler CryptoHandler) *NegativacaoController {
+func NewNegativacaoController(sqlHandler SQLHandler, rds Redis, cryptoHandler CryptoHandler) *NegativacaoController {
 	return &NegativacaoController{
 		NegativacaoService: usecases.NegativacaoService{
 			NegativacaoRepository: &NegativacaoRepository{
 				SQLHandler: sqlHandler,
+				Redis:      rds,
 			},
 			CryptoHandler: &cryptoHandler,
 		},
