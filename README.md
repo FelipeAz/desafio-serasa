@@ -23,6 +23,7 @@ HTTP Request -> Router -> Controller -> Service -> Repository -> JSON Output
 │   ├── tokendetails.go
 │   ├── user.go
 ├── infrastructure
+│   ├── redis.go
 │   ├── router.go
 │   └── sqlhandler.go
 ├── interfaces
@@ -31,6 +32,7 @@ HTTP Request -> Router -> Controller -> Service -> Repository -> JSON Output
 │   ├── mainframe_controller.go
 │   ├── negativacao_controller.go
 │   ├── negativacao_repository.go
+│   ├── redis.go
 │   ├── router.go
 │   ├── sqlhandler.go
 │   ├── user_controller.go
@@ -71,7 +73,7 @@ O GORM e o GIN pode ser instalado utilizando `go tool` pelos comandos:
 - GORM: A escolha dessa ferramenta foi pela simplicidade de criacao de tabelas e manuseamento de dados JSON onde sao relacionados com as structs. Essa tecnologia eh utilizada nos repositories (CRUD das entities) e na captura dos dados via json server.
 - GIN: O Gin foi uma tecnologia escolhida para manuseamento das requisicoes HTTP, pois facilita a manipulacao das requests,torna o codigo mais legivel e mais curto. Seus usos na aplicacao estao relacionados a criacao de rotas, captura de parametros e no start do servidor.
 - JWT: JWT foi escolhido como ferramenta para autenticacao da API. Para a autenticacao, eh necessario criar uma conta na rota /signup, e logar na aplicacao pela rota /login, que gerara um token que deve ser enviado em toda requisicao na forma de Authorization tipo 'Bearer Token'. Esse token tem duracao de 15 minutos, porem eh definido um RefreshToken de 1 semana. Se o usuario deslogar atraves da rota /logout, o token nao sera mais valido, pois o mesmo eh removido do BD pela rota /logout. Os tokens sao gerados a partir de variaveis de ambientes (JWT_SECRET e JWT_REFRESH_SECRET).
-- REDIS: Redis foi escolhido para o cacheamento das requisicoes que envolvem as Negociacoes.
+- REDIS: Redis foi escolhido para o cacheamento das requisicoes de Negociacoes para aumentar a performance de resposta do sistema.
 
 # API
 
