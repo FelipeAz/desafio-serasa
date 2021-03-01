@@ -39,6 +39,7 @@ func (ns *NegativacaoService) Create(n entity.Negativacao) (id uint, err error) 
 func (ns *NegativacaoService) Update(ID int, neg entity.Negativacao) (n entity.Negativacao, err error) {
 	neg.CustomerDocument = ns.CryptoHandler.EncryptString(neg.CustomerDocument)
 	n, err = ns.NegativacaoRepository.Update(ID, neg)
+	n.CustomerDocument = ns.CryptoHandler.DecryptString(n.CustomerDocument)
 	return
 }
 
