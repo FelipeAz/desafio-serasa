@@ -13,5 +13,5 @@ type JWTAuth interface {
 	TokenValid(*http.Request) error
 	VerifyToken(*http.Request) (*jwt.Token, error)
 	ExtractToken(*http.Request) string
-	FetchToken(string) bool
+	FetchToken(string, *http.Request) bool
 }

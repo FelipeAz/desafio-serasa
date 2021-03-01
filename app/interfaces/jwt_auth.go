@@ -104,14 +104,21 @@ func (jwtAuth *JWTAuth) ExtractToken(r *http.Request) string {
 // Se o usuario estiver logado mas o token for invalido, revalidamos sua sessao SE o refresh token estiver valido.
 // Caso o usuario deslogue, sera necessario logar novamente e utilizar um novo token, pois o mesmo eh apagado quando
 // damos logout.
-func (jwtAuth *JWTAuth) FetchToken(token string) bool {
+func (jwtAuth *JWTAuth) FetchToken(token string, r *http.Request) bool {
 	var access entity.Access
+	var isValid = false
 	db := jwtAuth.SQLHandler.GetGorm()
 	if err := db.Where("access_token=?", token).First(&access).Error; err != nil {
-		return false
+		return isValid
 	}
 
-	return jwtAuth.refreshToken(access.RefreshToken)
+	isValid = true
+	err := jwtAuth.TokenValid(r)
+	if err != nil {
+		isValid = jwtAuth.refreshToken(access.RefreshToken)
+	}
+
+	return isValid
 }
 
 // refreshToken atualiza o token do usuario
