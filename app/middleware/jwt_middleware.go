@@ -14,9 +14,9 @@ const (
 // AuthorizeJWT valida o token da requisicao.
 func AuthorizeJWT(jwt interfaces.JWTAuth) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		err := jwt.TokenValid(c.Request)
 		tokenString := jwt.ExtractToken(c.Request)
-		if err != nil && jwt.FetchToken(tokenString) == false {
+		err := jwt.TokenValid(c.Request, tokenString)
+		if err != nil {
 			c.JSON(http.StatusUnauthorized, "Voce nao possui autorizacao para acessar essa rota")
 			c.Abort()
 			return

@@ -49,6 +49,7 @@ func (jwtAuth *JWTAuth) CreateToken(auth entity.Access) (td *usecases.TokenDetai
 	rtClaims := jwt.MapClaims{}
 	rtClaims["refresh_token"] = auth.RefreshToken
 	rtClaims["user_id"] = auth.UserID
+	rtClaims["sub"] = 1
 	rtClaims["exp"] = time.Now().Add(time.Hour * 24 * 7).Unix()
 	refreshToken := jwt.NewWithClaims(jwt.SigningMethodHS256, rtClaims)
 	td.RefreshToken, err = refreshToken.SignedString([]byte(os.Getenv("JWT_REFRESH_SECRET")))
@@ -57,7 +58,7 @@ func (jwtAuth *JWTAuth) CreateToken(auth entity.Access) (td *usecases.TokenDetai
 }
 
 // TokenValid retorna se o token eh valido.
-func (jwtAuth *JWTAuth) TokenValid(r *http.Request) error {
+func (jwtAuth *JWTAuth) TokenValid(r *http.Request, tokenString string) error {
 	token, err := jwtAuth.VerifyToken(r)
 	if err != nil {
 		return err
@@ -65,6 +66,10 @@ func (jwtAuth *JWTAuth) TokenValid(r *http.Request) error {
 	if _, ok := token.Claims.(jwt.Claims); !ok && !token.Valid {
 		return err
 	}
+	if jwtAuth.FetchToken(tokenString) == false {
+		return fmt.Errorf("refresh token invalid")
+	}
+
 	return nil
 }
 
@@ -120,8 +125,7 @@ func (jwtAuth *JWTAuth) refreshToken(refreshToken string) bool {
 			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
 		}
 
-		// hmacSampleSecret is a []byte containing your secret, e.g. []byte("my_secret_key")
-		return []byte("secret"), nil
+		return []byte(os.Getenv("JWT_REFRESH_SECRET")), nil
 	})
 
 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {

@@ -18,7 +18,7 @@ type TokenDetails struct {
 // JWTAuth pertence a camada usecases.
 type JWTAuth interface {
 	CreateToken(entity.Access) (*TokenDetails, error)
-	TokenValid(*http.Request) error
+	TokenValid(*http.Request, string) error
 	VerifyToken(*http.Request) (*jwt.Token, error)
 	ExtractToken(*http.Request) string
 	FetchToken(string) bool
