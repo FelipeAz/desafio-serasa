@@ -8,7 +8,6 @@ import (
 	"time"
 
 	"github.com/FelipeAz/desafio-serasa/app/entity"
-	"github.com/FelipeAz/desafio-serasa/app/usecases"
 	"github.com/dgrijalva/jwt-go"
 )
 
@@ -27,8 +26,8 @@ func NewJWTAuth(sqlHandler SQLHandler) *JWTAuth {
 }
 
 // CreateToken cria um token JWT.
-func (jwtAuth *JWTAuth) CreateToken(auth entity.Access) (td *usecases.TokenDetails, err error) {
-	td = &usecases.TokenDetails{
+func (jwtAuth *JWTAuth) CreateToken(auth entity.Access) (td *entity.TokenDetails, err error) {
+	td = &entity.TokenDetails{
 		AtExpires: time.Now().Add(time.Minute * 15).Unix(),
 		RtExpires: time.Now().Add(time.Hour * 24 * 7).Unix(),
 	}

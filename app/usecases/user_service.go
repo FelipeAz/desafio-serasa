@@ -24,7 +24,7 @@ func (us *UserService) Login(email, password string, jwt JWTAuth) (access entity
 }
 
 // AuthUser insere o token de autenticacao no banco.
-func (us *UserService) AuthUser(id uint, tokenDetails TokenDetails) (access entity.Access, err error) {
+func (us *UserService) AuthUser(id uint, tokenDetails entity.TokenDetails) (access entity.Access, err error) {
 	access, err = us.UserRepository.AuthUser(id, &tokenDetails)
 	return
 }
