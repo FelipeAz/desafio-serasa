@@ -25,7 +25,7 @@ func (r Router) Dispatch(sqlHandler interfaces.SQLHandler) {
 	r.router.POST("/logout", userController.Logout)
 	r.router.POST("/login", userController.Login)
 
-	negativacaoController := interfaces.NewNegativacaoController(sqlHandler)
+	negativacaoController := interfaces.NewNegativacaoController(sqlHandler, *interfaces.NewCryptoHandler())
 	rg := r.router.Group("/negativacao")
 	rg.GET("/", middleware.AuthorizeJWT(jwt), negativacaoController.Get)
 	rg.GET("/:id", middleware.AuthorizeJWT(jwt), negativacaoController.GetByID)

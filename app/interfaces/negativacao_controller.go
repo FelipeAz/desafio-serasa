@@ -15,12 +15,13 @@ type NegativacaoController struct {
 }
 
 // NewNegativacaoController retorna uma instancia do controller.
-func NewNegativacaoController(sqlHandler SQLHandler) *NegativacaoController {
+func NewNegativacaoController(sqlHandler SQLHandler, cryptoHandler CryptoHandler) *NegativacaoController {
 	return &NegativacaoController{
 		NegativacaoService: usecases.NegativacaoService{
 			NegativacaoRepository: &NegativacaoRepository{
 				SQLHandler: sqlHandler,
 			},
+			CryptoHandler: &cryptoHandler,
 		},
 	}
 }
@@ -80,7 +81,7 @@ func (nc *NegativacaoController) Update(c *gin.Context) {
 		return
 	}
 
-	neg, err := nc.NegativacaoService.Update(id, &input)
+	neg, err := nc.NegativacaoService.Update(id, input)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

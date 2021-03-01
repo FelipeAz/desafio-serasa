@@ -38,12 +38,12 @@ func (nr *NegativacaoRepository) Create(neg entity.Negativacao) (uint, error) {
 }
 
 // Update atualiza uma negativacao.
-func (nr *NegativacaoRepository) Update(ID int, input *entity.Negativacao) (*entity.Negativacao, error) {
+func (nr *NegativacaoRepository) Update(ID int, input entity.Negativacao) (entity.Negativacao, error) {
 	db := nr.SQLHandler.GetGorm()
 	neg, err := nr.GetByID(ID)
 
 	if err != nil {
-		return &neg, err
+		return neg, err
 	}
 
 	if err := db.Model(&neg).Updates(map[string]interface{}{
@@ -54,10 +54,10 @@ func (nr *NegativacaoRepository) Update(ID int, input *entity.Negativacao) (*ent
 		"DebtDate":         input.DebtDate,
 		"InclusionDate":    input.InclusionDate,
 	}).Error; err != nil {
-		return &neg, err
+		return neg, err
 	}
 
-	return &neg, nil
+	return neg, nil
 }
 
 // Delete deleta uma negativacao.
