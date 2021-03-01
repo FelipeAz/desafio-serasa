@@ -20,11 +20,13 @@ HTTP Request -> Router -> Controller -> Service -> Repository -> JSON Output
 ├── entity
 │   ├── access.go
 │   ├── negativacao.go
+│   ├── tokendetails.go
 │   ├── user.go
 ├── infrastructure
 │   ├── router.go
 │   └── sqlhandler.go
 ├── interfaces
+│   ├── cryptohandler.go
 │   ├── jwt_auth.go
 │   ├── mainframe_controller.go
 │   ├── negativacao_controller.go
@@ -36,6 +38,7 @@ HTTP Request -> Router -> Controller -> Service -> Repository -> JSON Output
 ├── middleware
 │   ├── jwt_middleware.go
 ├── usecases
+│   ├── cryptohandler.go
 │   ├── jwt_auth.go
 │   ├── mainframe_service.go
 │   ├── negativacao_service.go
@@ -62,10 +65,11 @@ O GORM e o GIN pode ser instalado utilizando `go tool` pelos comandos:
 `go get -u github.com/gin-gonic/gin`
 `go get -u github.com/dgrijalva/jwt-go`
 
-- O banco de dados escolhido para esta aplicacao foi o MySQL 8.0
+- O banco de dados escolhido para esta aplicacao foi o MySQL 8.0. O usuario e senha do banco de dados eh definido nas variaveis de ambiente. (DB_USER e DB_PASSWORD).
+- Criptografia de Dados: A criptografia escolhida foi a AES e utiliza uma variavel de ambiente como chave secreta(ENCRYPT_KEY.)
 - GORM: A escolha dessa ferramenta foi pela simplicidade de criacao de tabelas e manuseamento de dados JSON onde sao relacionados com as structs. Essa tecnologia eh utilizada nos repositories (CRUD das entities) e na captura dos dados via json server.
 - GIN: O Gin foi uma tecnologia escolhida para manuseamento das requisicoes HTTP, pois facilita a manipulacao das requests,torna o codigo mais legivel e mais curto. Seus usos na aplicacao estao relacionados a criacao de rotas, captura de parametros e no start do servidor.
-- JWT: JWT foi escolhido como ferramenta para autenticacao da API. Para a autenticacao, eh necessario criar uma conta na rota /signup, e logar na aplicacao pela rota /login, que gerara um token que deve ser enviado em toda requisicao na forma de Authorization tipo 'Bearer Token'. Esse token tem duracao de 15 minutos, porem eh definido um RefreshToken de 1 semana. Se o usuario deslogar atraves da rota /logout, o token nao sera mais valido, pois o mesmo eh removido do BD pela rota /logout.
+- JWT: JWT foi escolhido como ferramenta para autenticacao da API. Para a autenticacao, eh necessario criar uma conta na rota /signup, e logar na aplicacao pela rota /login, que gerara um token que deve ser enviado em toda requisicao na forma de Authorization tipo 'Bearer Token'. Esse token tem duracao de 15 minutos, porem eh definido um RefreshToken de 1 semana. Se o usuario deslogar atraves da rota /logout, o token nao sera mais valido, pois o mesmo eh removido do BD pela rota /logout. Os tokens sao gerados a partir de variaveis de ambientes (JWT_SECRET e JWT_REFRESH_SECRET).
 
 # API
 
