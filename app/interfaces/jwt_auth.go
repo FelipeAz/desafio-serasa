@@ -27,7 +27,7 @@ func NewJWTAuth(sqlHandler SQLHandler) *JWTAuth {
 }
 
 // CreateToken cria um token JWT.
-func (service *JWTAuth) CreateToken(auth entity.Access) (td *usecases.TokenDetails, err error) {
+func (jwtAuth *JWTAuth) CreateToken(auth entity.Access) (td *usecases.TokenDetails, err error) {
 	td = &usecases.TokenDetails{
 		AtExpires: time.Now().Add(time.Minute * 15).Unix(),
 		RtExpires: time.Now().Add(time.Hour * 24 * 7).Unix(),
@@ -37,8 +37,8 @@ func (service *JWTAuth) CreateToken(auth entity.Access) (td *usecases.TokenDetai
 	claims["authorized"] = true
 	claims["token"] = auth.AccessToken
 	claims["user_id"] = auth.UserID
-	claims["Issuer"] = service.issure
-	claims["ExpiresAt"] = time.Now().Add(time.Minute * 15).Unix()
+	claims["issuer"] = jwtAuth.issure
+	claims["exp"] = time.Now().Add(time.Minute * 15).Unix()
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	td.AccessToken, err = token.SignedString([]byte(os.Getenv("JWT_SECRET")))
 	if err != nil {
@@ -49,7 +49,7 @@ func (service *JWTAuth) CreateToken(auth entity.Access) (td *usecases.TokenDetai
 	rtClaims := jwt.MapClaims{}
 	rtClaims["refresh_token"] = auth.RefreshToken
 	rtClaims["user_id"] = auth.UserID
-	rtClaims["ExpiresAt"] = time.Now().Add(time.Hour * 24 * 7).Unix()
+	rtClaims["exp"] = time.Now().Add(time.Hour * 24 * 7).Unix()
 	refreshToken := jwt.NewWithClaims(jwt.SigningMethodHS256, rtClaims)
 	td.RefreshToken, err = refreshToken.SignedString([]byte(os.Getenv("JWT_REFRESH_SECRET")))
 
@@ -57,8 +57,8 @@ func (service *JWTAuth) CreateToken(auth entity.Access) (td *usecases.TokenDetai
 }
 
 // TokenValid retorna se o token eh valido.
-func (service *JWTAuth) TokenValid(r *http.Request) error {
-	token, err := service.VerifyToken(r)
+func (jwtAuth *JWTAuth) TokenValid(r *http.Request) error {
+	token, err := jwtAuth.VerifyToken(r)
 	if err != nil {
 		return err
 	}
@@ -69,8 +69,8 @@ func (service *JWTAuth) TokenValid(r *http.Request) error {
 }
 
 // VerifyToken extrai o token e verifica.
-func (service *JWTAuth) VerifyToken(r *http.Request) (*jwt.Token, error) {
-	tokenString := service.ExtractToken(r)
+func (jwtAuth *JWTAuth) VerifyToken(r *http.Request) (*jwt.Token, error) {
+	tokenString := jwtAuth.ExtractToken(r)
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
@@ -84,7 +84,7 @@ func (service *JWTAuth) VerifyToken(r *http.Request) (*jwt.Token, error) {
 }
 
 // ExtractToken extrai o token da requisicao.
-func (service *JWTAuth) ExtractToken(r *http.Request) string {
+func (jwtAuth *JWTAuth) ExtractToken(r *http.Request) string {
 	keys := r.URL.Query()
 	token := keys.Get("token")
 	if token != "" {
@@ -99,13 +99,42 @@ func (service *JWTAuth) ExtractToken(r *http.Request) string {
 	return ""
 }
 
-// FetchToken valida se existe um usuario com o token no BD.
-func (service *JWTAuth) FetchToken(token string) bool {
+// FetchToken verifica se existe um usuario logado no BD atraves do token da requisicao.
+// Se o usuario estiver logado mas o token for invalido, revalidamos sua sessao SE o refresh token estiver valido.
+// Caso o usuario deslogue, sera necessario logar novamente e utilizar um novo token, pois o mesmo eh apagado quando
+// damos logout.
+func (jwtAuth *JWTAuth) FetchToken(token string) bool {
 	var access entity.Access
-	db := service.SQLHandler.GetGorm()
+	db := jwtAuth.SQLHandler.GetGorm()
 	if err := db.Where("access_token=?", token).First(&access).Error; err != nil {
 		return false
 	}
 
-	return true
+	return jwtAuth.refreshToken(access.RefreshToken)
+}
+
+// refreshToken atualiza o token do usuario
+func (jwtAuth *JWTAuth) refreshToken(refreshToken string) bool {
+	token, err := jwt.Parse(refreshToken, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
+		}
+
+		// hmacSampleSecret is a []byte containing your secret, e.g. []byte("my_secret_key")
+		return []byte("secret"), nil
+	})
+
+	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+		if int(claims["sub"].(float64)) == 1 {
+			return true
+		}
+
+		return false
+	}
+
+	if err != nil {
+		return false
+	}
+
+	return false
 }
