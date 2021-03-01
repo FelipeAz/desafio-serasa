@@ -13,12 +13,14 @@ type MainframeController struct {
 }
 
 // NewMainframeController retorna uma instancia do controller do Mainframe.
-func NewMainframeController(sqlHandler SQLHandler) *MainframeController {
+func NewMainframeController(sqlHandler SQLHandler, redis Redis, cryptoHandler CryptoHandler) *MainframeController {
 	return &MainframeController{
 		MainframeService: usecases.MainframeService{
 			NegativacaoRepository: &NegativacaoRepository{
 				SQLHandler: sqlHandler,
+				Redis:      redis,
 			},
+			CryptoHandler: &cryptoHandler,
 		},
 	}
 }
@@ -27,7 +29,7 @@ func NewMainframeController(sqlHandler SQLHandler) *MainframeController {
 func (mc *MainframeController) Get(c *gin.Context) {
 	data, err := mc.MainframeService.Get()
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err})
+		c.JSON(http.StatusServiceUnavailable, gin.H{"error": err.Error()})
 		return
 	}
 
@@ -38,7 +40,7 @@ func (mc *MainframeController) Get(c *gin.Context) {
 func (mc *MainframeController) Integrate(c *gin.Context) {
 	err := mc.MainframeService.Integrate()
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err})
+		c.JSON(http.StatusServiceUnavailable, gin.H{"error": err})
 		return
 	}
 
