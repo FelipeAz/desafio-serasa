@@ -58,16 +58,13 @@ func (jwtAuth *JWTAuth) CreateToken(auth entity.Access) (td *usecases.TokenDetai
 }
 
 // TokenValid retorna se o token eh valido.
-func (jwtAuth *JWTAuth) TokenValid(r *http.Request, tokenString string) error {
+func (jwtAuth *JWTAuth) TokenValid(r *http.Request) error {
 	token, err := jwtAuth.VerifyToken(r)
 	if err != nil {
 		return err
 	}
 	if _, ok := token.Claims.(jwt.Claims); !ok && !token.Valid {
 		return err
-	}
-	if jwtAuth.FetchToken(tokenString) == false {
-		return fmt.Errorf("refresh token invalid")
 	}
 
 	return nil

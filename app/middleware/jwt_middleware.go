@@ -12,11 +12,12 @@ const (
 )
 
 // AuthorizeJWT valida o token da requisicao.
-func AuthorizeJWT(jwt interfaces.JWTAuth) gin.HandlerFunc {
+func AuthorizeJWT(jwt *interfaces.JWTAuth) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		tokenString := jwt.ExtractToken(c.Request)
-		err := jwt.TokenValid(c.Request, tokenString)
-		if err != nil {
+		fetched := jwt.FetchToken(tokenString) // fetched indica se achou no banco
+		err := jwt.TokenValid(c.Request)
+		if err != nil || !fetched {
 			c.JSON(http.StatusUnauthorized, "Voce nao possui autorizacao para acessar essa rota")
 			c.Abort()
 			return
