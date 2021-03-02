@@ -40,7 +40,7 @@ func (mc *MainframeController) Get(c *gin.Context) {
 func (mc *MainframeController) Integrate(c *gin.Context) {
 	err := mc.MainframeService.Integrate()
 	if err != nil {
-		c.JSON(http.StatusServiceUnavailable, gin.H{"error": err})
+		c.JSON(http.StatusServiceUnavailable, gin.H{"error": err.Error()})
 		return
 	}
 
