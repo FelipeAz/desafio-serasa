@@ -9,37 +9,61 @@ type NegativacaoService struct {
 }
 
 // Get busca todas as negativacoes
-func (ns *NegativacaoService) Get() (n []entity.Negativacao) {
-	n = ns.NegativacaoRepository.Get()
+func (ns *NegativacaoService) Get() (n []entity.Negativacao, err error) {
+	n, err = ns.NegativacaoRepository.Get()
+	if err != nil {
+		return
+	}
 	if len(n) > 0 {
 		for i := 0; i < len(n); i++ {
-			n[i].CustomerDocument = ns.CryptoHandler.DecryptString(n[i].CustomerDocument)
+			n[i].CustomerDocument, err = ns.CryptoHandler.DecryptString(n[i].CustomerDocument)
+			if err != nil {
+				return nil, err
+			}
 		}
 	}
 	return
 }
 
-// GetByID busca uma negativacao com o ID especificado.
-func (ns *NegativacaoService) GetByID(ID int) (n entity.Negativacao, err error) {
-	n, err = ns.NegativacaoRepository.GetByID(ID)
-	if err == nil {
-		n.CustomerDocument = ns.CryptoHandler.DecryptString(n.CustomerDocument)
+// GetByCPF busca uma negativacao com o CPF especificado.
+func (ns *NegativacaoService) GetByCPF(cpf string) (n []entity.Negativacao, err error) {
+	cryptedCPF, err := ns.CryptoHandler.EncryptString(cpf)
+	n, err = ns.NegativacaoRepository.GetByCPF(cryptedCPF)
+	if err != nil {
+		return
+	}
+	if len(n) > 0 {
+		for i := 0; i < len(n); i++ {
+			n[i].CustomerDocument, err = ns.CryptoHandler.DecryptString(n[i].CustomerDocument)
+			if err != nil {
+				return
+			}
+		}
 	}
 	return
 }
 
 // Create insere uma negativacao no banco de dados.
 func (ns *NegativacaoService) Create(n entity.Negativacao) (id uint, err error) {
-	n.CustomerDocument = ns.CryptoHandler.EncryptString(n.CustomerDocument)
+	n.CustomerDocument, err = ns.CryptoHandler.EncryptString(n.CustomerDocument)
+	if err != nil {
+		return
+	}
 	id, err = ns.NegativacaoRepository.Create(n)
 	return
 }
 
 // Update atualiza uma negativacao no banco de dados.
 func (ns *NegativacaoService) Update(ID int, neg entity.Negativacao) (n entity.Negativacao, err error) {
-	neg.CustomerDocument = ns.CryptoHandler.EncryptString(neg.CustomerDocument)
+	neg.CustomerDocument, err = ns.CryptoHandler.EncryptString(neg.CustomerDocument)
+	if err != nil {
+		return
+	}
 	n, err = ns.NegativacaoRepository.Update(ID, neg)
-	n.CustomerDocument = ns.CryptoHandler.DecryptString(n.CustomerDocument)
+	if err != nil {
+		return
+	}
+	n.CustomerDocument, err = ns.CryptoHandler.DecryptString(n.CustomerDocument)
 	return
 }
 

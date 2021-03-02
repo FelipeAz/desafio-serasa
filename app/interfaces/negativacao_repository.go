@@ -14,7 +14,7 @@ type NegativacaoRepository struct {
 }
 
 // Get retorna todas as negativacoes.
-func (nr *NegativacaoRepository) Get() []entity.Negativacao {
+func (nr *NegativacaoRepository) Get() ([]entity.Negativacao, error) {
 	var negativacoes []entity.Negativacao
 
 	redisName := "all"
@@ -23,7 +23,7 @@ func (nr *NegativacaoRepository) Get() []entity.Negativacao {
 		db := nr.SQLHandler.GetGorm()
 		err = db.Debug().Model(&entity.Negativacao{}).Find(&negativacoes).Error
 		if err != nil {
-			return []entity.Negativacao{}
+			return []entity.Negativacao{}, err
 		}
 
 		newData, _ := json.Marshal(negativacoes)
@@ -32,7 +32,7 @@ func (nr *NegativacaoRepository) Get() []entity.Negativacao {
 
 	json.Unmarshal(data, &negativacoes)
 
-	return negativacoes
+	return negativacoes, nil
 }
 
 // GetByID retorna uma unica negativacao.
@@ -43,16 +43,30 @@ func (nr *NegativacaoRepository) GetByID(ID int) (entity.Negativacao, error) {
 	if err != nil {
 		db := nr.SQLHandler.GetGorm()
 		if err := db.Where("id = ?", ID).First(&negativacao).Error; err != nil {
-			return negativacao, err
+			return entity.Negativacao{}, err
 		}
 
 		newData, _ := json.Marshal(negativacao)
-		nr.Redis.Set(strconv.Itoa(ID), newData)
+		nr.Redis.Set(strconv.Itoa(int(negativacao.ID)), newData)
 	}
 
 	json.Unmarshal(data, &negativacao)
 
 	return negativacao, nil
+}
+
+// GetByCPF retorna uma unica negativacao.
+func (nr *NegativacaoRepository) GetByCPF(cryptedCPF string) ([]entity.Negativacao, error) {
+	var negativacoes []entity.Negativacao
+
+	db := nr.SQLHandler.GetGorm()
+
+	err := db.Debug().Model(&entity.Negativacao{}).Where("customer_document=?", cryptedCPF).Find(&negativacoes).Error
+	if err != nil {
+		return []entity.Negativacao{}, err
+	}
+
+	return negativacoes, nil
 }
 
 // Create cria uma negativacao.
@@ -84,7 +98,7 @@ func (nr *NegativacaoRepository) Update(ID int, input entity.Negativacao) (entit
 		"DebtDate":         input.DebtDate,
 		"InclusionDate":    input.InclusionDate,
 	}).Error; err != nil {
-		return neg, err
+		return entity.Negativacao{}, err
 	}
 
 	newData, _ := json.Marshal(neg)

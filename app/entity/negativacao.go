@@ -8,7 +8,7 @@ import (
 type Negativacao struct {
 	ID               uint      `json:"id,omitempty" gorm:"primaryKey;autoIncrement;not null"`
 	CompanyDocument  string    `json:"companyDocument" binding:"required"`
-	CompanyName      string    `json:"companyName" binding:"required"`
+	CompanyName      string    `json:"companyName" gorm:"primaryKey" binding:"required"`
 	CustomerDocument string    `json:"customerDocument" binding:"required"`
 	Value            float64   `json:"value" binding:"required"`
 	DebtDate         time.Time `json:"debtDate" binding:"required"`

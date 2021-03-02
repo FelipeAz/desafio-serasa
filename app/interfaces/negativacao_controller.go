@@ -29,20 +29,17 @@ func NewNegativacaoController(sqlHandler SQLHandler, rds Redis, cryptoHandler Cr
 
 // Get retorna todas as negativacoes.
 func (nc *NegativacaoController) Get(c *gin.Context) {
-	n := nc.NegativacaoService.Get()
+	n, err := nc.NegativacaoService.Get()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+	}
 
 	c.JSON(http.StatusOK, gin.H{"data": n})
 }
 
-// GetByID busca uma negativacao com o ID especificado.
-func (nc *NegativacaoController) GetByID(c *gin.Context) {
-	id, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid ID."})
-		return
-	}
-
-	n, err := nc.NegativacaoService.GetByID(id)
+// GetByCPF busca uma negativacao com o CPF especificado.
+func (nc *NegativacaoController) GetByCPF(c *gin.Context) {
+	n, err := nc.NegativacaoService.GetByCPF(c.Param("cpf"))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

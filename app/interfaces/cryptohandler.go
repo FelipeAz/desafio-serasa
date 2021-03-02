@@ -3,10 +3,8 @@ package interfaces
 import (
 	"crypto/aes"
 	"crypto/cipher"
-	"crypto/rand"
 	"encoding/base64"
 	"fmt"
-	"io"
 	"os"
 )
 
@@ -23,7 +21,7 @@ func NewCryptoHandler() *CryptoHandler {
 }
 
 // EncryptString retorna a string encriptada.
-func (ch *CryptoHandler) EncryptString(text string) string {
+func (ch *CryptoHandler) EncryptString(text string) (string, error) {
 	plaintext := []byte(text)
 
 	block, err := aes.NewCipher([]byte(ch.SecretKey))
@@ -33,18 +31,15 @@ func (ch *CryptoHandler) EncryptString(text string) string {
 
 	ciphertext := make([]byte, aes.BlockSize+len(plaintext))
 	iv := ciphertext[:aes.BlockSize]
-	if _, err := io.ReadFull(rand.Reader, iv); err != nil {
-		panic(err)
-	}
 
 	stream := cipher.NewCFBEncrypter(block, iv)
 	stream.XORKeyStream(ciphertext[aes.BlockSize:], plaintext)
 
-	return base64.URLEncoding.EncodeToString(ciphertext)
+	return base64.URLEncoding.EncodeToString(ciphertext), nil
 }
 
 // DecryptString retorna a string decriptada.
-func (ch *CryptoHandler) DecryptString(encryptedText string) string {
+func (ch *CryptoHandler) DecryptString(encryptedText string) (string, error) {
 	ciphertext, _ := base64.URLEncoding.DecodeString(encryptedText)
 
 	block, err := aes.NewCipher([]byte(ch.SecretKey))
@@ -59,5 +54,5 @@ func (ch *CryptoHandler) DecryptString(encryptedText string) string {
 
 	stream.XORKeyStream(ciphertext, ciphertext)
 
-	return fmt.Sprintf("%s", ciphertext)
+	return fmt.Sprintf("%s", ciphertext), nil
 }

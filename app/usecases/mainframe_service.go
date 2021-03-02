@@ -59,7 +59,6 @@ func (ms *MainframeService) Integrate() error {
 
 	// Persist Negativacoes
 	for i := 0; i < len(negativacoes); i++ {
-		negativacoes[i].CustomerDocument = ms.CryptoHandler.EncryptString(negativacoes[i].CustomerDocument)
 		_, err := ms.persistNegativacao(negativacoes[i])
 		if err != nil {
 			return err
@@ -70,6 +69,7 @@ func (ms *MainframeService) Integrate() error {
 }
 
 func (ms *MainframeService) persistNegativacao(negativacao entity.Negativacao) (id uint, err error) {
+	negativacao.CustomerDocument, err = ms.CryptoHandler.EncryptString(negativacao.CustomerDocument)
 	id, err = ms.NegativacaoRepository.Create(negativacao)
 	return
 }
