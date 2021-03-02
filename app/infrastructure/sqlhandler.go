@@ -27,9 +27,9 @@ func NewSQLHandler() (interfaces.SQLHandler, error) {
 	}
 
 	dbHandler.db = db
-	dbHandler.migrateTables()
+	err = dbHandler.migrateTables()
 
-	return dbHandler, nil
+	return dbHandler, err
 }
 
 // CloseConnection fecha a conexao com o banco de dados.
@@ -49,10 +49,12 @@ func (env *SQLHandler) GetGorm() *gorm.DB {
 	return env.db
 }
 
-func (env *SQLHandler) migrateTables() {
-	env.db.Migrator().AutoMigrate(
+func (env *SQLHandler) migrateTables() (err error) {
+	err = env.db.Migrator().AutoMigrate(
 		&entity.Negativacao{},
 		&entity.User{},
 		&entity.Access{},
 	)
+
+	return
 }
