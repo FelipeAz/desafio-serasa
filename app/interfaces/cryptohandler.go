@@ -8,7 +8,7 @@ import (
 	"os"
 )
 
-// CryptoHandler .
+// CryptoHandler struct utilizada na implementacao dos metodos.
 type CryptoHandler struct {
 	SecretKey string
 }
@@ -26,7 +26,7 @@ func (ch *CryptoHandler) EncryptString(text string) (string, error) {
 
 	block, err := aes.NewCipher([]byte(ch.SecretKey))
 	if err != nil {
-		panic(err)
+		return "", err
 	}
 
 	ciphertext := make([]byte, aes.BlockSize+len(plaintext))
@@ -40,11 +40,14 @@ func (ch *CryptoHandler) EncryptString(text string) (string, error) {
 
 // DecryptString retorna a string decriptada.
 func (ch *CryptoHandler) DecryptString(encryptedText string) (string, error) {
-	ciphertext, _ := base64.URLEncoding.DecodeString(encryptedText)
+	ciphertext, err := base64.URLEncoding.DecodeString(encryptedText)
+	if err != nil {
+		return "", err
+	}
 
 	block, err := aes.NewCipher([]byte(ch.SecretKey))
 	if err != nil {
-		panic(err)
+		return "", err
 	}
 
 	iv := ciphertext[:aes.BlockSize]
