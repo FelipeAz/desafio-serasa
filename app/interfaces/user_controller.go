@@ -36,7 +36,7 @@ func (uc *UserController) Login(c *gin.Context) {
 
 	access, err := uc.UserService.Login(credential.Email, credential.Password, uc.JWTAuth)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"Login Failed": err.Error()})
+		c.JSON(http.StatusBadRequest, "Falha no Login. Verifique as credenciais")
 		return
 	}
 
