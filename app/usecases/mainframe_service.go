@@ -5,12 +5,9 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"os"
 
 	"github.com/FelipeAz/desafio-serasa/app/entity"
-)
-
-const (
-	mainframeurl = "http://localhost:3000/negativacoes"
 )
 
 // MainframeService representa uma instancia do servico relacionado ao mainframe.
@@ -21,7 +18,7 @@ type MainframeService struct {
 
 // ConnectJSONServer conecta com o JSONServer
 func (ms *MainframeService) ConnectJSONServer() (*http.Response, error) {
-	resp, err := http.Get(mainframeurl)
+	resp, err := http.Get(os.Getenv("MAINFRAME_URL"))
 	if err != nil {
 		return nil, err
 	}

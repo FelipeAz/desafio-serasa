@@ -8,10 +8,6 @@ import (
 	"github.com/garyburd/redigo/redis"
 )
 
-const (
-	redisExpire = 60
-)
-
 // Redis contem a conexao com o REDIS.
 type Redis struct {
 	Port string
@@ -50,7 +46,7 @@ func (r *Redis) Set(key string, value []byte) error {
 		return err
 	}
 
-	conn.Do("EXPIRE", key, redisExpire)
+	conn.Do("EXPIRE", key, os.Getenv("REDIS_EXPIRE"))
 
 	return err
 }

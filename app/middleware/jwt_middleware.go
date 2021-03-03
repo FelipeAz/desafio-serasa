@@ -7,10 +7,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-const (
-	bearerSchema = "Bearer"
-)
-
 // AuthorizeJWT valida o token da requisicao.
 func AuthorizeJWT(jwt *interfaces.JWTAuth) gin.HandlerFunc {
 	return func(c *gin.Context) {
