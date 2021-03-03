@@ -69,7 +69,7 @@ func (uc *UserController) Logout(c *gin.Context) {
 	}
 
 	logout := uc.UserService.Logout(credential.Email, credential.Password)
-	if logout == false {
+	if !logout {
 		c.JSON(http.StatusOK, "User is not Logged In")
 		return
 	}

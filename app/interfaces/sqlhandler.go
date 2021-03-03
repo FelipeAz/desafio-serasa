@@ -4,6 +4,6 @@ import "gorm.io/gorm"
 
 // SQLHandler layer de interface.
 type SQLHandler interface {
-	CloseConnection() error
+	CloseConnection()
 	GetGorm() *gorm.DB
 }

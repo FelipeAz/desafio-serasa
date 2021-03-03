@@ -2,6 +2,7 @@ package infrastructure
 
 import (
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/FelipeAz/desafio-serasa/app/entity"
@@ -33,15 +34,13 @@ func NewSQLHandler() (interfaces.SQLHandler, error) {
 }
 
 // CloseConnection fecha a conexao com o banco de dados.
-func (env *SQLHandler) CloseConnection() error {
+func (env *SQLHandler) CloseConnection() {
 	sql, err := env.db.DB()
 	if err != nil {
-		return err
+		log.Println(err)
 	}
 
 	sql.Close()
-
-	return nil
 }
 
 // GetGorm retorna uma instancia do GORM que sera utilizada para busca no BD.

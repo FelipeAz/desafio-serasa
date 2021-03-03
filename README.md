@@ -80,6 +80,7 @@ O GORM e o GIN pode ser instalado utilizando `go tool` pelos comandos:
 - REDIS: Redis foi escolhido para o cacheamento das requisicoes de Negociacoes para aumentar a performance de resposta do sistema.
 - JSON-SERVER: O Json Server esta alocado na porta 3000 e recebe o arquivo negativacoes.json (renomeado para mainframe_db.json) recebido na proposta do desafio.
 
-# API
-
 # Tests
+- Testes Unitarios: Foram testadas as funcoes de Criptohandler e Jwt Auth
+
+# API

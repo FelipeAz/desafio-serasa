@@ -70,6 +70,15 @@ func (ms *MainframeService) Integrate() error {
 
 func (ms *MainframeService) persistNegativacao(negativacao entity.Negativacao) (id uint, err error) {
 	negativacao.CustomerDocument, err = ms.CryptoHandler.EncryptString(negativacao.CustomerDocument)
+	if err != nil {
+		log.Println(err)
+		return 0, err
+	}
 	id, err = ms.NegativacaoRepository.Create(negativacao)
+	if err != nil {
+		log.Println(err)
+		return 0, err
+	}
+
 	return
 }

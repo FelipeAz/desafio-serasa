@@ -2,6 +2,7 @@ package interfaces
 
 import (
 	"encoding/json"
+	"log"
 	"strconv"
 
 	"github.com/FelipeAz/desafio-serasa/app/entity"
@@ -31,10 +32,18 @@ func (nr *NegativacaoRepository) Get() ([]entity.Negativacao, error) {
 		}
 
 		newData, _ := json.Marshal(negativacoes)
-		nr.Redis.Set(redisName, newData)
+		err := nr.Redis.Set(redisName, newData)
+		if err != nil {
+			log.Println(err)
+			return []entity.Negativacao{}, err
+		}
 	}
 
-	json.Unmarshal(data, &negativacoes)
+	err = json.Unmarshal(data, &negativacoes)
+	if err != nil {
+		log.Println(err)
+		return []entity.Negativacao{}, err
+	}
 
 	return negativacoes, nil
 }
@@ -51,10 +60,18 @@ func (nr *NegativacaoRepository) GetByID(ID int) (entity.Negativacao, error) {
 		}
 
 		newData, _ := json.Marshal(negativacao)
-		nr.Redis.Set(strconv.Itoa(int(negativacao.ID)), newData)
+		err := nr.Redis.Set(strconv.Itoa(int(negativacao.ID)), newData)
+		if err != nil {
+			log.Println(err)
+			return entity.Negativacao{}, err
+		}
 	}
 
-	json.Unmarshal(data, &negativacao)
+	err = json.Unmarshal(data, &negativacao)
+	if err != nil {
+		log.Println(err)
+		return entity.Negativacao{}, err
+	}
 
 	return negativacao, nil
 }

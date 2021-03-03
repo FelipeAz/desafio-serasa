@@ -150,11 +150,7 @@ func (jwtAuth *JWTAuth) refreshToken(refreshToken string) bool {
 	})
 
 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-		if int(claims["sub"].(float64)) == 1 {
-			return true
-		}
-
-		return false
+		return int(claims["sub"].(float64)) == 1
 	}
 
 	if err != nil {

@@ -1,6 +1,8 @@
 package usecases
 
 import (
+	"log"
+
 	"github.com/FelipeAz/desafio-serasa/app/entity"
 )
 
@@ -18,6 +20,11 @@ func (us *UserService) Login(email, password string, jwt JWTAuth) (access entity
 	}
 
 	tokenDetails, err := jwt.CreateToken(entity.Access{})
+	if err != nil {
+		log.Println(err)
+		return entity.Access{}, err
+	}
+
 	access, err = us.AuthUser(usr.ID, *tokenDetails)
 
 	return

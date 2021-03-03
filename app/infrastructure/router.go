@@ -1,6 +1,8 @@
 package infrastructure
 
 import (
+	"log"
+
 	"github.com/FelipeAz/desafio-serasa/app/interfaces"
 	"github.com/FelipeAz/desafio-serasa/app/middleware"
 	"github.com/gin-gonic/gin"
@@ -43,5 +45,8 @@ func (r Router) Dispatch(sqlHandler interfaces.SQLHandler, rds interfaces.Redis)
 }
 
 func (r Router) listen() {
-	r.router.Run(":8080")
+	err := r.router.Run(":8080")
+	if err != nil {
+		log.Println(err)
+	}
 }
