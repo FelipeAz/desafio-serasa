@@ -7,6 +7,10 @@ import (
 	"github.com/FelipeAz/desafio-serasa/app/entity"
 )
 
+// Clean Architecture: A camada interface eh responsavel por transformar data em entidade, portanto, como o repository
+// realiza essa funcao, nao faz sentido implementar aqui uma interface, mas sim a execucao das operacoes
+// no banco de dados.
+
 // NegativacaoRepository eh responsavel por toda operacao que envolve banco.
 type NegativacaoRepository struct {
 	SQLHandler SQLHandler

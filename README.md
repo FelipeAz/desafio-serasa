@@ -4,12 +4,11 @@ Teste tecnico de codificacao e arquitetura de software proposto pela empresa Ser
 # Instalacao
 
 # Arquitetura
-A Arquitetura escolhida para este desafio foi a Clean Architecture. Essa arquitetura se baseia em interfaces e contem, para cada entidade, um Controller, um Servico e um Repository alem da Entity. 
+A Arquitetura escolhida para este desafio foi a Clean Architecture. Essa arquitetura se baseia em interfaces e contem, para cada entidade, um Controller, um Servico e um Repository. O motivo da escolha dessa arquitetura foi, a facilidade de implementacao de testes, a independencia de uma Interface, de um banco de dados e de outras tecnologias. Essa independencia vem do isolamento dessas ferramentas em arquivos separados, portanto fica facil por exemplo alterar o banco de dados MySQL para um PostgresDB.
 
 Referencia: https://dev.to/bmf_san/dive-to-clean-architecture-with-golang-cd4
 
 O Fluxo da arquitetura segue o padrao:
-
 `
 HTTP Request -> Router -> Controller -> Service -> Repository -> JSON Output
 `
@@ -29,7 +28,9 @@ HTTP Request -> Router -> Controller -> Service -> Repository -> JSON Output
 │   ├── router.go
 │   └── sqlhandler.go
 ├── interfaces
+│   ├── cryptohandler_test.go
 │   ├── cryptohandler.go
+│   ├── jwt_auth_test.go
 │   ├── jwt_auth.go
 │   ├── mainframe_controller.go
 │   ├── negativacao_controller.go
@@ -57,8 +58,9 @@ HTTP Request -> Router -> Controller -> Service -> Repository -> JSON Output
 | --- | --- |
 | Database | Contem um Arquivo SQL que sera utilizado para a criacao do Banco de Dados. As tabelas serao geradas com auxilio do GORM. |
 | Entity | Contem os Modelos que serao utilizados como referencia para criacao da tabela no banco de dados e operacoes de GET, UPDATE, CREATE e DELETE utilizando o GORM. |
-| Infrastructure | Contem os Drivers da Aplicacao. |
+| Infrastructure | Contem os Drivers e Frameworks da Aplicacao. |
 | Usecases | Contem as Regras de Negocio (Logica da Aplicacao). |
+| Interface | Sao responsaveis por transformar Data em Entidade e transformar use cases em um formato 'easy-to-use'. Contem Controllers, Gateways e Presenters |
 
 # Dependencias
 Para o funcionamento dessa aplicacao sao necessarios: Curl, JWT-GO, Redis,GORM, GORM MySQL Driver e GIN
