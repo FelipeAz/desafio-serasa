@@ -17,7 +17,7 @@ type Redis struct {
 // NewRedis retorna um objeto Redis
 func NewRedis() interfaces.Redis {
 	rds := &Redis{}
-	redisPort := fmt.Sprintf("localhost:%s", os.Getenv("REDIS_PORT"))
+	redisPort := fmt.Sprintf("%s:%s", os.Getenv("REDIS_HOST"), os.Getenv("REDIS_PORT"))
 
 	rds.Port = redisPort
 

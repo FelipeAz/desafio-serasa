@@ -1,0 +1,42 @@
+version: '3.4'
+services: 
+#   golang:
+#     build:
+#       context: "."
+#       dockerfile: "Dockerfile"
+#     container_name: golang
+#     links: 
+#       - redis
+#     env_file:
+#         - .env
+#     ports:
+#       - "8080"
+#     depends_on:
+#       - "mysql"
+#       - "redis"
+  redis:
+    image: redis:alpine
+    container_name: redis
+    depends_on:
+      - mysql      
+    ports:
+      - 6380:6379     
+    restart: always 
+  mysql:
+    image: mysql
+    container_name: mysql
+    environment:
+      MYSQL_DATABASE: Serasa
+      MYSQL_USER: root
+      MYSQL_ROOT_PASSWORD: abc123
+    ports: 
+      - 3307:3306
+    restart: always
+  json-server:
+    image: vimagick/json-server
+    command: -H 0.0.0.0 -p 3000 -w /json-server/db.json
+    ports:
+      - 3000:3000
+    volumes: 
+      - ./json-server:/json-server
+    restart: always
