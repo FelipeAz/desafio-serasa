@@ -32,26 +32,44 @@ func (jwtAuth *JWTAuth) CreateToken(auth entity.Access) (td *entity.TokenDetails
 		RtExpires: time.Now().Add(time.Hour * 24 * 7).Unix(),
 	}
 
-	claims := jwt.MapClaims{}
-	claims["authorized"] = true
-	claims["token"] = auth.AccessToken
-	claims["user_id"] = auth.UserID
-	claims["issuer"] = jwtAuth.issure
-	claims["exp"] = time.Now().Add(time.Minute * 15).Unix()
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	td.AccessToken, err = token.SignedString([]byte(os.Getenv("JWT_SECRET")))
+	aToken, err := generateAccessTokenString(auth, td.AtExpires)
 	if err != nil {
 		return nil, err
 
 	}
+	td.AccessToken = aToken
 
+	rToken, err := generateRefreshTokenString(auth, td.RtExpires)
+	if err != nil {
+		return nil, err
+
+	}
+	td.RefreshToken = rToken
+
+	return
+}
+
+func generateAccessTokenString(auth entity.Access, expires int64) (aToken string, err error) {
+	claims := jwt.MapClaims{}
+	claims["authorized"] = true
+	claims["token"] = auth.AccessToken
+	claims["user_id"] = auth.UserID
+	claims["issuer"] = "Felipe"
+	claims["exp"] = expires
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	aToken, err = token.SignedString([]byte(os.Getenv("JWT_SECRET")))
+
+	return
+}
+
+func generateRefreshTokenString(auth entity.Access, expires int64) (rToken string, err error) {
 	rtClaims := jwt.MapClaims{}
 	rtClaims["refresh_token"] = auth.RefreshToken
 	rtClaims["user_id"] = auth.UserID
 	rtClaims["sub"] = 1
-	rtClaims["exp"] = time.Now().Add(time.Hour * 24 * 7).Unix()
-	refreshToken := jwt.NewWithClaims(jwt.SigningMethodHS256, rtClaims)
-	td.RefreshToken, err = refreshToken.SignedString([]byte(os.Getenv("JWT_REFRESH_SECRET")))
+	rtClaims["exp"] = expires
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, rtClaims)
+	rToken, err = token.SignedString([]byte(os.Getenv("JWT_REFRESH_SECRET")))
 
 	return
 }

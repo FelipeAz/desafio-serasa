@@ -8,14 +8,15 @@ func TestEncryptString(t *testing.T) {
 	// Init
 	t.Parallel()
 	ch := NewCryptoHandler()
+	result := "AAAAAAAAAAAAAAAAAAAAACWnqccsz84cIzKv"
 	cpf := "47455415893"
 
 	// Execution
-	encryptedCpf, err := ch.EncryptString(cpf)
+	encryptedCpf, _ := ch.EncryptString(cpf)
 
 	// Validation
-	if encryptedCpf == "" {
-		t.Errorf("falha na criptografia. Erro:%s", err.Error())
+	if encryptedCpf != result {
+		t.Errorf("valor esperado `%s` recebido `%s`", result, encryptedCpf)
 	}
 }
 
