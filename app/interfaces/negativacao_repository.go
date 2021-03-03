@@ -37,6 +37,8 @@ func (nr *NegativacaoRepository) Get() ([]entity.Negativacao, error) {
 			log.Println(err)
 			return []entity.Negativacao{}, err
 		}
+
+		return negativacoes, nil
 	}
 
 	err = json.Unmarshal(data, &negativacoes)
@@ -65,6 +67,8 @@ func (nr *NegativacaoRepository) GetByID(ID int) (entity.Negativacao, error) {
 			log.Println(err)
 			return entity.Negativacao{}, err
 		}
+
+		return negativacao, nil
 	}
 
 	err = json.Unmarshal(data, &negativacao)
@@ -119,6 +123,7 @@ func (nr *NegativacaoRepository) Update(ID int, input entity.Negativacao) (entit
 		"CompanyName":      input.CompanyName,
 		"CustomerDocument": input.CustomerDocument,
 		"Value":            input.Value,
+		"Contract":         input.Contract,
 		"DebtDate":         input.DebtDate,
 		"InclusionDate":    input.InclusionDate,
 	}).Error; err != nil {
@@ -141,6 +146,7 @@ func (nr *NegativacaoRepository) Delete(ID int) error {
 	n, err := nr.GetByID(ID)
 
 	if err != nil {
+		log.Println(err)
 		return err
 	}
 

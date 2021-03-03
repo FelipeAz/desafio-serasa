@@ -11,6 +11,7 @@ type Negativacao struct {
 	CompanyName      string    `json:"companyName" gorm:"primaryKey" binding:"required"`
 	CustomerDocument string    `json:"customerDocument" binding:"required"`
 	Value            float64   `json:"value" binding:"required"`
+	Contract         string    `json:"contract" gorm:"unique" binding:"required"`
 	DebtDate         time.Time `json:"debtDate" binding:"required"`
 	InclusionDate    time.Time `json:"inclusionDate" binding:"required"`
 }

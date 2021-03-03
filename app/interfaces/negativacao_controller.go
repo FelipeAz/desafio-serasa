@@ -32,6 +32,7 @@ func (nc *NegativacaoController) Get(c *gin.Context) {
 	n, err := nc.NegativacaoService.Get()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{"data": n})
