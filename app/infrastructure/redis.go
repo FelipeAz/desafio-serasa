@@ -2,6 +2,7 @@ package infrastructure
 
 import (
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/FelipeAz/desafio-serasa/app/interfaces"
@@ -37,12 +38,14 @@ func (r *Redis) RedisConnect() (redis.Conn, error) {
 func (r *Redis) Set(key string, value []byte) error {
 	conn, err := r.RedisConnect()
 	if err != nil {
+		log.Println(err)
 		return err
 	}
 	defer conn.Close()
 
 	_, err = conn.Do("SET", key, []byte(value))
 	if err != nil {
+		log.Println(err)
 		return err
 	}
 
@@ -55,6 +58,7 @@ func (r *Redis) Set(key string, value []byte) error {
 func (r *Redis) Get(key string) ([]byte, error) {
 	conn, err := r.RedisConnect()
 	if err != nil {
+		log.Println(err)
 		return nil, err
 	}
 	defer conn.Close()
@@ -62,6 +66,7 @@ func (r *Redis) Get(key string) ([]byte, error) {
 	var data []byte
 	data, err = redis.Bytes(conn.Do("GET", key))
 	if err != nil {
+		log.Println(err)
 		return nil, err
 	}
 
@@ -72,6 +77,7 @@ func (r *Redis) Get(key string) ([]byte, error) {
 func (r *Redis) Flush(key string) ([]byte, error) {
 	conn, err := r.RedisConnect()
 	if err != nil {
+		log.Println(err)
 		return nil, err
 	}
 	defer conn.Close()

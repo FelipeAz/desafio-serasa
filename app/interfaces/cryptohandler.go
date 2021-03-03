@@ -5,6 +5,7 @@ import (
 	"crypto/cipher"
 	"encoding/base64"
 	"fmt"
+	"log"
 	"os"
 )
 
@@ -26,6 +27,7 @@ func (ch *CryptoHandler) EncryptString(text string) (string, error) {
 
 	block, err := aes.NewCipher([]byte(ch.SecretKey))
 	if err != nil {
+		log.Println(err)
 		return "", err
 	}
 
@@ -42,11 +44,13 @@ func (ch *CryptoHandler) EncryptString(text string) (string, error) {
 func (ch *CryptoHandler) DecryptString(encryptedText string) (string, error) {
 	ciphertext, err := base64.URLEncoding.DecodeString(encryptedText)
 	if err != nil {
+		log.Println(err)
 		return "", err
 	}
 
 	block, err := aes.NewCipher([]byte(ch.SecretKey))
 	if err != nil {
+		log.Println(err)
 		return "", err
 	}
 

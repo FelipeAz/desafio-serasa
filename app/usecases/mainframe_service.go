@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"os"
 
@@ -37,6 +38,7 @@ func (ms *MainframeService) Get() ([]entity.Negativacao, error) {
 
 	err = json.NewDecoder(resp.Body).Decode(&data)
 	if err != nil || err == io.EOF {
+		log.Println(err)
 		return nil, err
 	}
 
@@ -58,6 +60,7 @@ func (ms *MainframeService) Integrate() error {
 	for i := 0; i < len(negativacoes); i++ {
 		_, err := ms.persistNegativacao(negativacoes[i])
 		if err != nil {
+			log.Println(err)
 			return err
 		}
 	}
