@@ -28,6 +28,9 @@ func (ns *NegativacaoService) Get() (n []entity.Negativacao, err error) {
 // GetByCPF busca uma negativacao com o CPF especificado.
 func (ns *NegativacaoService) GetByCPF(cpf string) (n []entity.Negativacao, err error) {
 	cryptedCPF, err := ns.CryptoHandler.EncryptString(cpf)
+	if err != nil {
+		return
+	}
 	n, err = ns.NegativacaoRepository.GetByCPF(cryptedCPF)
 	if err != nil {
 		return

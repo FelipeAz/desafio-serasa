@@ -96,7 +96,10 @@ func (nr *NegativacaoRepository) Create(neg entity.Negativacao) (uint, error) {
 	result := db.Create(&neg)
 
 	newData, _ := json.Marshal(neg)
-	nr.Redis.Set(strconv.Itoa(int(neg.ID)), newData)
+	err := nr.Redis.Set(strconv.Itoa(int(neg.ID)), newData)
+	if err != nil {
+		log.Println(err)
+	}
 	nr.Redis.Flush("all")
 
 	return neg.ID, result.Error
@@ -123,7 +126,10 @@ func (nr *NegativacaoRepository) Update(ID int, input entity.Negativacao) (entit
 	}
 
 	newData, _ := json.Marshal(neg)
-	nr.Redis.Set(strconv.Itoa(int(neg.ID)), newData)
+	err = nr.Redis.Set(strconv.Itoa(int(neg.ID)), newData)
+	if err != nil {
+		log.Println(err)
+	}
 	nr.Redis.Flush("all")
 
 	return neg, nil

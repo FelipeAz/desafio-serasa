@@ -49,7 +49,10 @@ func (r *Redis) Set(key string, value []byte) error {
 		return err
 	}
 
-	conn.Do("EXPIRE", key, os.Getenv("REDIS_EXPIRE"))
+	_, err = conn.Do("EXPIRE", key, os.Getenv("REDIS_EXPIRE"))
+	if err != nil {
+		log.Println(err)
+	}
 
 	return err
 }

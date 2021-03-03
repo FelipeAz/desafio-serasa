@@ -14,7 +14,6 @@ import (
 // JWTAuth contem variaveis do servico.
 type JWTAuth struct {
 	SQLHandler SQLHandler
-	issure     string
 }
 
 // NewJWTAuth instancia do servico.
