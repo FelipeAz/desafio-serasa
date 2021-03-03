@@ -21,7 +21,6 @@ type JWTAuth struct {
 func NewJWTAuth(sqlHandler SQLHandler) *JWTAuth {
 	return &JWTAuth{
 		SQLHandler: sqlHandler,
-		issure:     "Felipe",
 	}
 }
 
@@ -74,9 +73,10 @@ func generateRefreshTokenString(auth entity.Access, expires int64) (rToken strin
 	return
 }
 
-// TokenValid retorna se o token eh valido.
+// TokenValid retorna se o token eh valido, considerando seu tempo de expiracao
 func (jwtAuth *JWTAuth) TokenValid(r *http.Request) error {
-	token, err := jwtAuth.VerifyToken(r)
+	tokenStr := jwtAuth.ExtractToken(r)
+	token, err := verifyToken(tokenStr)
 	if err != nil {
 		return err
 	}
@@ -87,9 +87,8 @@ func (jwtAuth *JWTAuth) TokenValid(r *http.Request) error {
 	return nil
 }
 
-// VerifyToken extrai o token e verifica.
-func (jwtAuth *JWTAuth) VerifyToken(r *http.Request) (*jwt.Token, error) {
-	tokenString := jwtAuth.ExtractToken(r)
+// Verifica se o metodo de signing do token eh valido
+func verifyToken(tokenString string) (*jwt.Token, error) {
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
@@ -139,7 +138,8 @@ func (jwtAuth *JWTAuth) FetchToken(token string, r *http.Request) bool {
 	return isValid
 }
 
-// refreshToken atualiza o token do usuario
+// refreshToken verifica se o refresh token eh valido, se sim, o usuario mesmo com o access token
+// expirado pode ter acesso ao sistema.
 func (jwtAuth *JWTAuth) refreshToken(refreshToken string) bool {
 	token, err := jwt.Parse(refreshToken, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
