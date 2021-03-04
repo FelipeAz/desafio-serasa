@@ -81,6 +81,13 @@ O GORM e o GIN pode ser instalado utilizando `go tool` pelos comandos:
 - JSON-SERVER: O Json Server esta alocado na porta 3000 e recebe o arquivo negativacoes.json (renomeado para mainframe_db.json) recebido na proposta do desafio.
 
 # Tests
-- Testes Unitarios: Foram testadas as funcoes de Criptohandler e Jwt Auth
+Testes Unitarios: Foram testadas as funcoes de Criptohandler e Jwt Auth
+
+- Criptohandler: Testes de Criptografia e Descriptografia do CustomerDocument
+- JWT Auth: Testes de Geracao de token de Access & Refresh; Teste de Extracao de Token; Testes de Validacao dos tokens de Access e Refresh.
+
+Para executar os testes basta rodar o comando : `make tests`
 
 # API
+
+A documentacao completa da API se encontra nesse link: https://documenter.getpostman.com/view/7958753/Tz5iA17X

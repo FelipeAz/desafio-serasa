@@ -1,0 +1,681 @@
+{
+	"info": {
+		"_postman_id": "4c7e6878-1307-4daa-8acf-3e9fb04a162d",
+		"name": "Desafio Serasa",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Sign Up",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\":\"admin@admin.com\",\n    \"password\": \"admin\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/signup",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"signup"
+					]
+				},
+				"description": "** Nao eh necessario autenticacao para essa rota **\n\nCria um usuario no sistema. "
+			},
+			"response": [
+				{
+					"name": "Sign Up Example",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\":\"admin@admin.com\",\n    \"password\": \"admin\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/signup",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"signup"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 03 Mar 2021 20:39:26 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "62"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": {\n        \"id\": 1,\n        \"email\": \"admin@admin.com\",\n        \"password\": \"admin\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\":\"admin@admin.com\",\n    \"password\": \"admin\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/login",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"login"
+					]
+				},
+				"description": " ** Nao eh necessario autenticacao para essa rota **\nLoga o usuario no sistema. Essa rota gera um token de autenticacao que deve ser utilizado nas outras rotas."
+			},
+			"response": [
+				{
+					"name": "Login Failed",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\":\"admin@admin.com\",\n    \"password\": \"admin233\"\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/login",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"_postman_previewlanguage": "json",
+					"header": null,
+					"cookie": [],
+					"body": "\"Falha no Login. Verifique as credenciais\""
+				},
+				{
+					"name": "Login Success Example",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\":\"admin@admin.com\",\n    \"password\": \"admin\"\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/login",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"_postman_previewlanguage": "json",
+					"header": null,
+					"cookie": [],
+					"body": "{\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2MTQ4MDUyMjQsImlzc3VlciI6IkZlbGlwZSIsInRva2VuIjoiIiwidXNlcl9pZCI6MH0.r-Gy2fZO6OFMjvob3wk-E2BKAmtXaEoqXnrmHJGsnl4\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Logout",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\":\"admin@admin.com\",\n    \"password\": \"admin\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/logout",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"logout"
+					]
+				},
+				"description": "** Nao eh necessario autenticacao para essa rota **\n\nDesloga o usuario da aplicacao e invalida o token JWT"
+			},
+			"response": [
+				{
+					"name": "Logout Failed",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\":\"admin@admin.com\",\n    \"password\": \"admin123\"\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/logout",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"logout"
+							]
+						}
+					},
+					"_postman_previewlanguage": "json",
+					"header": null,
+					"cookie": [],
+					"body": "\"User is not Logged In\""
+				},
+				{
+					"name": "Logout Success Example",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\":\"admin@admin.com\",\n    \"password\": \"admin\"\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/login",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"_postman_previewlanguage": "json",
+					"header": null,
+					"cookie": [],
+					"body": "\"Successfully Logged Out\""
+				}
+			]
+		},
+		{
+			"name": "Mainframe Content",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2MTQ4MTA5OTMsImlzc3VlciI6IkZlbGlwZSIsInRva2VuIjoiIiwidXNlcl9pZCI6MH0.WTllPns_irW0O7pLwRaq46J8X012cEIyLYKSaTiNlnk",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/mainframe",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"mainframe"
+					]
+				},
+				"description": "Retorna todo o conteudo presente no mainframe"
+			},
+			"response": [
+				{
+					"name": "Mainframe Content Example",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/mainframe",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"mainframe"
+							]
+						}
+					},
+					"_postman_previewlanguage": "json",
+					"header": null,
+					"cookie": [],
+					"body": "{\n    \"data\": [\n        {\n            \"companyDocument\": \"59291534000167\",\n            \"companyName\": \"ABC S.A.\",\n            \"customerDocument\": \"51537476467\",\n            \"value\": 1235.23,\n            \"contract\": \"bc063153-fb9e-4334-9a6c-0d069a42065b\",\n            \"debtDate\": \"2015-11-13T20:32:51-03:00\",\n            \"inclusionDate\": \"2020-11-13T20:32:51-03:00\"\n        },\n        {\n            \"companyDocument\": \"77723018000146\",\n            \"companyName\": \"123 S.A.\",\n            \"customerDocument\": \"51537476467\",\n            \"value\": 400,\n            \"contract\": \"5f206825-3cfe-412f-8302-cc1b24a179b0\",\n            \"debtDate\": \"2015-10-12T20:32:51-03:00\",\n            \"inclusionDate\": \"2020-10-12T20:32:51-03:00\"\n        },\n        {\n            \"companyDocument\": \"04843574000182\",\n            \"companyName\": \"DBZ S.A.\",\n            \"customerDocument\": \"26658236674\",\n            \"value\": 59.99,\n            \"contract\": \"3132f136-3889-4efb-bf92-e1efbb3fe15e\",\n            \"debtDate\": \"2015-09-11T20:32:51-03:00\",\n            \"inclusionDate\": \"2020-09-11T20:32:51-03:00\"\n        },\n        {\n            \"companyDocument\": \"23993551000107\",\n            \"companyName\": \"XPTO S.A.\",\n            \"customerDocument\": \"62824334010\",\n            \"value\": 230.5,\n            \"contract\": \"8b441dbb-3bb4-4fc9-9b46-bdaad00a7a98\",\n            \"debtDate\": \"2015-08-10T20:32:51-03:00\",\n            \"inclusionDate\": \"2020-08-10T20:32:51-03:00\"\n        },\n        {\n            \"companyDocument\": \"70170935000100\",\n            \"companyName\": \"ASD S.A.\",\n            \"customerDocument\": \"25124543043\",\n            \"value\": 10340.67,\n            \"contract\": \"d6628a0e-d4dd-4f14-8591-2ddc7f1bbeff\",\n            \"debtDate\": \"2015-07-09T20:32:51-03:00\",\n            \"inclusionDate\": \"2020-07-09T20:32:51-03:00\"\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "Mainframe Integrate",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2MTQ4MTA5OTMsImlzc3VlciI6IkZlbGlwZSIsInRva2VuIjoiIiwidXNlcl9pZCI6MH0.WTllPns_irW0O7pLwRaq46J8X012cEIyLYKSaTiNlnk",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/mainframe/integrate",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"mainframe",
+						"integrate"
+					]
+				},
+				"description": "Realiza a integracao com o Mainframe, capturando todos os dados e persistindo no banco da aplicacao"
+			},
+			"response": [
+				{
+					"name": "Mainframe Success Integrate Example",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/mainframe/integrate",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"mainframe",
+								"integrate"
+							]
+						}
+					},
+					"_postman_previewlanguage": "json",
+					"header": null,
+					"cookie": [],
+					"body": "\"Integration Finished\""
+				}
+			]
+		},
+		{
+			"name": "Get Negativacao",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2MTQ4MTA5OTMsImlzc3VlciI6IkZlbGlwZSIsInRva2VuIjoiIiwidXNlcl9pZCI6MH0.WTllPns_irW0O7pLwRaq46J8X012cEIyLYKSaTiNlnk",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/negativacao/",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"negativacao",
+						""
+					]
+				},
+				"description": "Retorna todas as negativacoes salvas na aplicacao"
+			},
+			"response": [
+				{
+					"name": "Get Negativacao Example",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/negativacao/",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"negativacao",
+								""
+							]
+						}
+					},
+					"_postman_previewlanguage": "json",
+					"header": null,
+					"cookie": [],
+					"body": "{\n    \"data\": [\n        {\n            \"id\": 1,\n            \"companyDocument\": \"59291534000167\",\n            \"companyName\": \"ABC S.A.\",\n            \"customerDocument\": \"51537476467\",\n            \"value\": 1235.23,\n            \"contract\": \"bc063153-fb9e-4334-9a6c-0d069a42065b\",\n            \"debtDate\": \"2015-11-13T21:32:51-02:00\",\n            \"inclusionDate\": \"2020-11-13T20:32:51-03:00\"\n        },\n        {\n            \"id\": 2,\n            \"companyDocument\": \"77723018000146\",\n            \"companyName\": \"123 S.A.\",\n            \"customerDocument\": \"51537476467\",\n            \"value\": 400,\n            \"contract\": \"5f206825-3cfe-412f-8302-cc1b24a179b0\",\n            \"debtDate\": \"2015-10-12T20:32:51-03:00\",\n            \"inclusionDate\": \"2020-10-12T20:32:51-03:00\"\n        },\n        {\n            \"id\": 3,\n            \"companyDocument\": \"04843574000182\",\n            \"companyName\": \"DBZ S.A.\",\n            \"customerDocument\": \"26658236674\",\n            \"value\": 59.99,\n            \"contract\": \"3132f136-3889-4efb-bf92-e1efbb3fe15e\",\n            \"debtDate\": \"2015-09-11T20:32:51-03:00\",\n            \"inclusionDate\": \"2020-09-11T20:32:51-03:00\"\n        },\n        {\n            \"id\": 4,\n            \"companyDocument\": \"23993551000107\",\n            \"companyName\": \"XPTO S.A.\",\n            \"customerDocument\": \"62824334010\",\n            \"value\": 230.5,\n            \"contract\": \"8b441dbb-3bb4-4fc9-9b46-bdaad00a7a98\",\n            \"debtDate\": \"2015-08-10T20:32:51-03:00\",\n            \"inclusionDate\": \"2020-08-10T20:32:51-03:00\"\n        },\n        {\n            \"id\": 5,\n            \"companyDocument\": \"70170935000100\",\n            \"companyName\": \"ASD S.A.\",\n            \"customerDocument\": \"25124543043\",\n            \"value\": 10340.67,\n            \"contract\": \"d6628a0e-d4dd-4f14-8591-2ddc7f1bbeff\",\n            \"debtDate\": \"2015-07-09T20:32:51-03:00\",\n            \"inclusionDate\": \"2020-07-09T20:32:51-03:00\"\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "Get Negativacao By CPF",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2MTQ4MTA5OTMsImlzc3VlciI6IkZlbGlwZSIsInRva2VuIjoiIiwidXNlcl9pZCI6MH0.WTllPns_irW0O7pLwRaq46J8X012cEIyLYKSaTiNlnk",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/negativacao/51537476467",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"negativacao",
+						"51537476467"
+					]
+				},
+				"description": "Retorna todas as negativacoes de um determinado CPF"
+			},
+			"response": [
+				{
+					"name": "Get Negativacao By CPF Example",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/negativacao/51537476467",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"negativacao",
+								"51537476467"
+							]
+						}
+					},
+					"_postman_previewlanguage": "json",
+					"header": null,
+					"cookie": [],
+					"body": "{\n    \"data\": [\n        {\n            \"id\": 1,\n            \"companyDocument\": \"59291534000167\",\n            \"companyName\": \"ABC S.A.\",\n            \"customerDocument\": \"51537476467\",\n            \"value\": 1235.23,\n            \"contract\": \"bc063153-fb9e-4334-9a6c-0d069a42065b\",\n            \"debtDate\": \"2015-11-13T21:32:51-02:00\",\n            \"inclusionDate\": \"2020-11-13T20:32:51-03:00\"\n        },\n        {\n            \"id\": 2,\n            \"companyDocument\": \"77723018000146\",\n            \"companyName\": \"123 S.A.\",\n            \"customerDocument\": \"51537476467\",\n            \"value\": 400,\n            \"contract\": \"5f206825-3cfe-412f-8302-cc1b24a179b0\",\n            \"debtDate\": \"2015-10-12T20:32:51-03:00\",\n            \"inclusionDate\": \"2020-10-12T20:32:51-03:00\"\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "Create Negativacao",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2MTQ4MTA5OTMsImlzc3VlciI6IkZlbGlwZSIsInRva2VuIjoiIiwidXNlcl9pZCI6MH0.WTllPns_irW0O7pLwRaq46J8X012cEIyLYKSaTiNlnk",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"companyDocument\": \"77723018000146\",\n    \"companyName\": \"Empresa Teste\",\n    \"customerDocument\": \"12346456898\",\n    \"value\": 400.00,\n    \"contract\": \"12312312321-12312321-12321\",\n    \"debtDate\": \"2015-10-12T20:32:51-03:00\",\n    \"inclusionDate\": \"2020-10-12T20:32:51-03:00\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/negativacao",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"negativacao"
+					]
+				},
+				"description": "Cria uma negativacao na aplicacao"
+			},
+			"response": [
+				{
+					"name": "Create Negativacao Example",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"companyDocument\": \"77723018000146\",\n    \"companyName\": \"Empresa Teste\",\n    \"customerDocument\": \"12346456898\",\n    \"value\": 400.00,\n    \"contract\": \"5f206825-3cfe-412f-8302-cc1b24a179b0\",\n    \"debtDate\": \"2015-10-12T20:32:51-03:00\",\n    \"inclusionDate\": \"2020-10-12T20:32:51-03:00\"\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/negativacao",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"negativacao"
+							]
+						}
+					},
+					"_postman_previewlanguage": "json",
+					"header": null,
+					"cookie": [],
+					"body": "{\n    \"data\": 7\n}"
+				}
+			]
+		},
+		{
+			"name": "Update Negativacao",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2MTQ4MTA5OTMsImlzc3VlciI6IkZlbGlwZSIsInRva2VuIjoiIiwidXNlcl9pZCI6MH0.WTllPns_irW0O7pLwRaq46J8X012cEIyLYKSaTiNlnk",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"companyDocument\": \"77723018000146\",\n    \"companyName\": \"Empresa Teste UPDATED!!!\",\n    \"customerDocument\": \"12346456898\",\n    \"value\": 400.00,\n    \"contract\": \"12312312321-12312321-12321\",\n    \"debtDate\": \"2015-10-12T20:32:51-03:00\",\n    \"inclusionDate\": \"2020-10-12T20:32:51-03:00\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/negativacao/7",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"negativacao",
+						"7"
+					]
+				},
+				"description": "Atualiza uma negativacao atraves de um ID"
+			},
+			"response": [
+				{
+					"name": "Update Negativacao Example",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"companyDocument\": \"77723018000146\",\n    \"companyName\": \"Empresa Teste UPDATED!!!\",\n    \"customerDocument\": \"12346456898\",\n    \"value\": 400.00,\n    \"contract\": \"12312312321-12312321-12321\",\n    \"debtDate\": \"2015-10-12T20:32:51-03:00\",\n    \"inclusionDate\": \"2020-10-12T20:32:51-03:00\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/negativacao/7",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"negativacao",
+								"7"
+							]
+						}
+					},
+					"_postman_previewlanguage": "json",
+					"header": null,
+					"cookie": [],
+					"body": "{\n    \"data\": {\n        \"id\": 7,\n        \"companyDocument\": \"77723018000146\",\n        \"companyName\": \"Empresa Teste UPDATED!!!\",\n        \"customerDocument\": \"12346456898\",\n        \"value\": 400,\n        \"contract\": \"12312312321-12312321-12321\",\n        \"debtDate\": \"2015-10-12T20:32:51-03:00\",\n        \"inclusionDate\": \"2020-10-12T20:32:51-03:00\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Delete Negativacao",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2MTQ4MTA5OTMsImlzc3VlciI6IkZlbGlwZSIsInRva2VuIjoiIiwidXNlcl9pZCI6MH0.WTllPns_irW0O7pLwRaq46J8X012cEIyLYKSaTiNlnk",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/negativacao/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"negativacao",
+						"1"
+					]
+				},
+				"description": "Deleta uma negativacao pelo ID especificado"
+			},
+			"response": [
+				{
+					"name": "Delete Negativacao Example",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/negativacao/7",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"negativacao",
+								"7"
+							]
+						}
+					},
+					"_postman_previewlanguage": "json",
+					"header": null,
+					"cookie": [],
+					"body": "{\n    \"data\": true\n}"
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "<token gerado no /login>",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
