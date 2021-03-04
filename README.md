@@ -1,5 +1,5 @@
 # desafio-serasa
-Teste tecnico de codificacao e arquitetura de software proposto pela empresa Serasa.
+Teste tecnico de codificacao e arquitetura de software proposto pela empresa Serasa. O desafio consiste em capturar dados de um json-server e persistir no banco de dados da aplicacao.
 
 # Go Directories
 A estrutura de pastas segue o layout padrao de projeto do golang onde as pastas sao dividas em:
@@ -19,7 +19,36 @@ Referencia: https://github.com/golang-standards/project-layout#cmd
 
 - Requisitos: Docker
 
-Para a instalacao do projeto basta executar o comando `make run`.
+Para a instalacao do projeto basta executar o comando `make install` Esse comando vai instalar e Executar o projeto. 
+
+Caso ja possua o projeto instalado, basta utilizar o comando `make run` para inicializacao.
+
+- Portas Locais utilizadas no docker:
+  
+    ``golang : 8080 ``
+
+    ``mysql: 3307``
+    
+    ``redis: 3380``
+  
+    ``json-server: 3000``
+## Makefile
+
+### `make install` 
+Instala o projeto na maquina, deve ser executado ao menos uma vez, depois pode ser substituido pelo `make run`
+
+### `make run`
+Inicia os containers do projeto e suas aplicacoes.
+
+### `make rund`
+Inicia os containers do projeto e suas aplicacoes com o parametro -d (dettach).
+
+### `make stop`
+Fecha a aplicacao
+
+### `make tests`
+Executa os testes unitarios da aplicacao
+
 
 # Arquitetura
 A Arquitetura escolhida para este desafio foi a Clean Architecture. Essa arquitetura se baseia em interfaces e contem, para cada entidade, um Controller, um Servico e um Repository. O motivo da escolha dessa arquitetura foi, a facilidade de implementacao de testes, a independencia de uma Interface, de um banco de dados e de outras tecnologias. Essa independencia vem do isolamento dessas ferramentas em arquivos separados, portanto fica facil por exemplo alterar o banco de dados MySQL para um PostgresDB.
@@ -32,7 +61,8 @@ HTTP Request -> Router -> Controller -> Service -> Repository -> JSON Output
 ```
 ./desafio-serasa/
 ├── cmd
-│   └── main.go
+│   └──desafio-serasa    
+│      └── main.go
 ├── config
 │   └── infrastructure
 │       ├── redis.go
@@ -78,14 +108,13 @@ HTTP Request -> Router -> Controller -> Service -> Repository -> JSON Output
 │           │   ├── user_repository.go
 │           └────── user_service.go
 ├── scripts
-│   ├── redis.go
-│   ├── router.go
-│   └── sqlhandler.go
+│   ├── install.sh
+│   ├── run.sh
+│   ├── rund.sh
+│   ├── stop.sh
+│   └── tests.sh
 ├── vendor
-│   └── infrastructure
-│       ├── redis.go
-│       ├── router.go
-│       └── sqlhandler.go
+│   └── dependencies
 ├── .env_example
 ├── docker-compose.yml
 ├── go.mod

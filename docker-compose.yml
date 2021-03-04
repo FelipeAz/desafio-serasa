@@ -33,8 +33,8 @@ services:
       - 3307:3306
   json-server:
     image: vimagick/json-server
-    command: -H 0.0.0.0 -p 3000 -w /json-server/db.json
+    command: -H 0.0.0.0 -p 3000 -w /docker/json-server/db.json
     ports:
       - 3000:3000
-    volumes: 
-      - ./json-server:/json-server
+    volumes:
+      - ./docker/json-server:/docker/json-server

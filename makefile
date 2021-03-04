@@ -4,11 +4,11 @@ install:
 run:
 	sh scripts/run.sh
 
+rund:
+	sh scripts/rund.sh
+
 stop:
 	sh scripts/stop.sh
-
-build:
-	sh scripts/build.sh
 
 tests:
 	sh scripts/tests.sh
