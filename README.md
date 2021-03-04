@@ -1,7 +1,25 @@
 # desafio-serasa
 Teste tecnico de codificacao e arquitetura de software proposto pela empresa Serasa.
 
+# Go Directories
+A estrutura de pastas segue o layout padrao de projeto do golang onde as pastas sao dividas em:
+
+### `/cmd`
+Contem a aplicacao principal do projeto (arquivo main do projeto desafio-serasa) onde se comunica com o codigo presente em `/internal` e `/pkg`.
+
+### `/internal`
+Contem codigo e bibliotecas restrita a aplicacao principal (desafio-serasa). Caso o codigo ou a biblioteca possa ser compartilhado entre outras aplicacoes, alocamos em `/pkg`
+
+### `/vendor`
+Dependencias da aplicacao geradas pelo `Go Mod`
+
+Referencia: https://github.com/golang-standards/project-layout#cmd
+
 # Instalacao
+
+- Requisitos: Docker
+
+Para a instalacao do projeto basta executar o comando `make install`.
 
 # Arquitetura
 A Arquitetura escolhida para este desafio foi a Clean Architecture. Essa arquitetura se baseia em interfaces e contem, para cada entidade, um Controller, um Servico e um Repository. O motivo da escolha dessa arquitetura foi, a facilidade de implementacao de testes, a independencia de uma Interface, de um banco de dados e de outras tecnologias. Essa independencia vem do isolamento dessas ferramentas em arquivos separados, portanto fica facil por exemplo alterar o banco de dados MySQL para um PostgresDB.
@@ -12,44 +30,67 @@ HTTP Request -> Router -> Controller -> Service -> Repository -> JSON Output
 `
 
 ```
-./app/
-├── database
-│   ├── migrations
-│       └── database.sql
-├── entity
-│   ├── access.go
-│   ├── negativacao.go
-│   ├── tokendetails.go
-│   ├── user.go
-├── infrastructure
+./desafio-serasa/
+├── build
+│   ├── json-server
+│   │    └── db.json
+│   ├── Dockerfile
+│   └── docker-compose.yml
+├── cmd
+│   └── main.go
+├── config
+│   └── infrastructure
+│       ├── redis.go
+│       ├── router.go
+│       └── sqlhandler.go
+├── internal
+│   └── pkg
+│       └── app
+│           └── database
+│           │   └── migrations
+│           │       └── database.sql     
+│           ├── entity
+│           │   ├── access.go
+│           │   ├── negativacao.go
+│           │   ├── tokendetails.go
+│           │   ├── user.go
+│           │   └── sqlhandler.go
+│           ├── interfaces
+│           │   ├── cryptohandler_test.go
+│           │   ├── cryptohandler.go
+│           │   ├── jwt_auth_test.go
+│           │   ├── jwt_auth.go
+│           │   ├── mainframe_controller.go
+│           │   ├── negativacao_controller.go
+│           │   ├── negativacao_repository.go
+│           │   ├── redis.go
+│           │   ├── router.go
+│           │   ├── sqlhandler.go
+│           │   ├── user_controller.go
+│           │   └── user_repository.go
+│           ├── middleware
+│           │   └── jwt_middleware.go
+│           ├── usecases
+│           │   ├── cryptohandler.go
+│           │   ├── jwt_auth.go
+│           │   ├── mainframe_service.go
+│           │   ├── negativacao_service.go
+│           │   ├── negativacao_repository.go
+│           │   ├── user_repository.go
+│           └────── user_service.go
+├── scripts
 │   ├── redis.go
 │   ├── router.go
 │   └── sqlhandler.go
-├── interfaces
-│   ├── cryptohandler_test.go
-│   ├── cryptohandler.go
-│   ├── jwt_auth_test.go
-│   ├── jwt_auth.go
-│   ├── mainframe_controller.go
-│   ├── negativacao_controller.go
-│   ├── negativacao_repository.go
-│   ├── redis.go
-│   ├── router.go
-│   ├── sqlhandler.go
-│   ├── user_controller.go
-│   ├── user_repository.go
-├── middleware
-│   ├── jwt_middleware.go
-├── usecases
-│   ├── cryptohandler.go
-│   ├── jwt_auth.go
-│   ├── mainframe_service.go
-│   ├── negativacao_service.go
-│   ├── negativacao_repository.go
-│   ├── user_repository.go
-│   ├── user_service.go
-├── .env_example
-└── main.go
+├── vendor
+│   └── infrastructure
+│       ├── redis.go
+│       ├── router.go
+│       └── sqlhandler.go
+├── README.md
+├── go.mod
+├── go.sum
+└── makefile
 ```
 
 | Camada |Conteudo|
