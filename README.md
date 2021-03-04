@@ -6,8 +6,6 @@ Teste tecnico de codificacao e arquitetura de software proposto pela empresa Ser
 # Arquitetura
 A Arquitetura escolhida para este desafio foi a Clean Architecture. Essa arquitetura se baseia em interfaces e contem, para cada entidade, um Controller, um Servico e um Repository. O motivo da escolha dessa arquitetura foi, a facilidade de implementacao de testes, a independencia de uma Interface, de um banco de dados e de outras tecnologias. Essa independencia vem do isolamento dessas ferramentas em arquivos separados, portanto fica facil por exemplo alterar o banco de dados MySQL para um PostgresDB.
 
-Referencia: https://dev.to/bmf_san/dive-to-clean-architecture-with-golang-cd4
-
 O Fluxo da arquitetura segue o padrao:
 `
 HTTP Request -> Router -> Controller -> Service -> Repository -> JSON Output
