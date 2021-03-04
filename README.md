@@ -19,7 +19,7 @@ Referencia: https://github.com/golang-standards/project-layout#cmd
 
 - Requisitos: Docker
 
-Para a instalacao do projeto basta executar o comando `make install`.
+Para a instalacao do projeto basta executar o comando `make run`.
 
 # Arquitetura
 A Arquitetura escolhida para este desafio foi a Clean Architecture. Essa arquitetura se baseia em interfaces e contem, para cada entidade, um Controller, um Servico e um Repository. O motivo da escolha dessa arquitetura foi, a facilidade de implementacao de testes, a independencia de uma Interface, de um banco de dados e de outras tecnologias. Essa independencia vem do isolamento dessas ferramentas em arquivos separados, portanto fica facil por exemplo alterar o banco de dados MySQL para um PostgresDB.
@@ -31,11 +31,6 @@ HTTP Request -> Router -> Controller -> Service -> Repository -> JSON Output
 
 ```
 ./desafio-serasa/
-├── build
-│   ├── json-server
-│   │    └── db.json
-│   ├── Dockerfile
-│   └── docker-compose.yml
 ├── cmd
 │   └── main.go
 ├── config
@@ -43,6 +38,10 @@ HTTP Request -> Router -> Controller -> Service -> Repository -> JSON Output
 │       ├── redis.go
 │       ├── router.go
 │       └── sqlhandler.go
+├── docker
+│       ├── json-server
+│       │    └── db.json
+│       └── Dockerfile.yml
 ├── internal
 │   └── pkg
 │       └── app
@@ -87,10 +86,12 @@ HTTP Request -> Router -> Controller -> Service -> Repository -> JSON Output
 │       ├── redis.go
 │       ├── router.go
 │       └── sqlhandler.go
-├── README.md
+├── .env_example
+├── docker-compose.yml
 ├── go.mod
-├── go.sum
-└── makefile
+│   └── go.sum
+├── makefile
+└── README.ms
 ```
 
 | Camada |Conteudo|
