@@ -1,1 +1,1 @@
-go test -v ./app/interfaces/
+go test -v ./internal/pkg/app/interfaces/
