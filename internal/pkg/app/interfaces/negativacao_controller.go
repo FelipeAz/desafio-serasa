@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/FelipeAz/desafio-serasa/app/entity"
-	"github.com/FelipeAz/desafio-serasa/app/usecases"
+	"github.com/FelipeAz/desafio-serasa/internal/pkg/app/entity"
+	"github.com/FelipeAz/desafio-serasa/internal/pkg/app/usecases"
 	"github.com/gin-gonic/gin"
 )
 

@@ -1,7 +1,7 @@
 package interfaces
 
 import (
-	"github.com/FelipeAz/desafio-serasa/app/entity"
+	"github.com/FelipeAz/desafio-serasa/internal/pkg/app/entity"
 )
 
 // UserRepository representa o repositorio dos usuarios e realiza as operacoes de BD.

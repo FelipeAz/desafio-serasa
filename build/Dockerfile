@@ -1,7 +1,7 @@
 FROM golang:1.6.2-alpine
 
 # Copia o diretorio atual para o work directory
-COPY . /go/src/github.com/FelipeAz/desafio-serasa
+COPY .. /go/src/github.com/FelipeAz/desafio-serasa
 
 # Instalacao do Git e Bash
 RUN apk update && apk upgrade && \

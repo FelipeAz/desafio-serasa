@@ -3,7 +3,7 @@ package usecases
 import (
 	"log"
 
-	"github.com/FelipeAz/desafio-serasa/app/entity"
+	"github.com/FelipeAz/desafio-serasa/internal/pkg/app/entity"
 )
 
 // UserService pertence a camada usecases.

@@ -1,6 +1,6 @@
 package usecases
 
-import "github.com/FelipeAz/desafio-serasa/app/entity"
+import "github.com/FelipeAz/desafio-serasa/internal/pkg/app/entity"
 
 // NegativacaoService pertence a camada Usecases.
 type NegativacaoService struct {
