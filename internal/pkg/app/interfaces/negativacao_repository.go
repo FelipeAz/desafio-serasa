@@ -5,7 +5,7 @@ import (
 	"log"
 	"strconv"
 
-	"github.com/FelipeAz/desafio-serasa/app/entity"
+	"github.com/FelipeAz/desafio-serasa/internal/pkg/app/entity"
 )
 
 // Clean Architecture: A camada interface eh responsavel por transformar data em entidade, portanto, como o repository

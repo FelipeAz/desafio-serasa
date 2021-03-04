@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"github.com/FelipeAz/desafio-serasa/app/infrastructure"
+	"github.com/FelipeAz/desafio-serasa/config/infrastructure"
 )
 
 func main() {

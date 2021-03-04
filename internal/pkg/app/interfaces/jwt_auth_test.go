@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/FelipeAz/desafio-serasa/app/entity"
+	"github.com/FelipeAz/desafio-serasa/internal/pkg/app/entity"
 )
 
 // Testa a funcao de geracao de access token

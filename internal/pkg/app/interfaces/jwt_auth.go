@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/FelipeAz/desafio-serasa/app/entity"
+	"github.com/FelipeAz/desafio-serasa/internal/pkg/app/entity"
 	"github.com/dgrijalva/jwt-go"
 )
 

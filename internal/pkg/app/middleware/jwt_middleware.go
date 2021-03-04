@@ -3,7 +3,7 @@ package middleware
 import (
 	"net/http"
 
-	"github.com/FelipeAz/desafio-serasa/app/interfaces"
+	"github.com/FelipeAz/desafio-serasa/internal/pkg/app/interfaces"
 	"github.com/gin-gonic/gin"
 )
 

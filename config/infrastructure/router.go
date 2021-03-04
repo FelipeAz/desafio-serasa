@@ -3,8 +3,8 @@ package infrastructure
 import (
 	"log"
 
-	"github.com/FelipeAz/desafio-serasa/app/interfaces"
-	"github.com/FelipeAz/desafio-serasa/app/middleware"
+	"github.com/FelipeAz/desafio-serasa/internal/pkg/app/interfaces"
+	"github.com/FelipeAz/desafio-serasa/internal/pkg/app/middleware"
 	"github.com/gin-gonic/gin"
 )
 

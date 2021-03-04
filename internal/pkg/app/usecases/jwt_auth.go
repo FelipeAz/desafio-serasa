@@ -3,7 +3,7 @@ package usecases
 import (
 	"net/http"
 
-	"github.com/FelipeAz/desafio-serasa/app/entity"
+	"github.com/FelipeAz/desafio-serasa/internal/pkg/app/entity"
 )
 
 // JWTAuth pertence a camada usecases.

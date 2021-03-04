@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/FelipeAz/desafio-serasa/app/interfaces"
+	"github.com/FelipeAz/desafio-serasa/internal/pkg/app/interfaces"
 	"github.com/garyburd/redigo/redis"
 )
 

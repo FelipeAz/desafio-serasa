@@ -5,8 +5,8 @@ import (
 	"log"
 	"os"
 
-	"github.com/FelipeAz/desafio-serasa/app/entity"
-	"github.com/FelipeAz/desafio-serasa/app/interfaces"
+	"github.com/FelipeAz/desafio-serasa/internal/pkg/app/entity"
+	"github.com/FelipeAz/desafio-serasa/internal/pkg/app/interfaces"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )

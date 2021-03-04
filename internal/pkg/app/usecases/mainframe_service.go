@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/FelipeAz/desafio-serasa/app/entity"
+	"github.com/FelipeAz/desafio-serasa/internal/pkg/app/entity"
 )
 
 // MainframeService representa uma instancia do servico relacionado ao mainframe.
